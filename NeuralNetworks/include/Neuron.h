@@ -8,27 +8,26 @@ class Neuron
 {
 public:
     static unsigned short maxWeight;
-    static unsigned short minWeight;
-    static std::random_device rd;  //Will be used to obtain a seed for the random number engine
-    static std::mt19937 gen;
-    static std::uniform_real_distribution<> dis;
+    static unsigned short maxBias;
 
     private:
 
 
-        std::vector <std::vector<float>> activations;
+        std::vector<float> activations;
         std::vector<float> weights;
         float bias;
     public:
         Neuron(const unsigned short & nbNeurons);
         virtual ~Neuron();
-        void processActivation();
-        void sigmoid();
+        void processActivation(const std::vector<float>& previousLayerActivations);
+        float sigmoid(float x);
+        static std::vector<float> hadamardProduct(const std::vector<float> & vector1 ,const std::vector<float> & vector2 );
 
 
 
         //accesseurs
-        const std::vector<std::vector<float>> & getActivations() const;
+        const std::vector<float> & getActivations() const;
+        const float & getLastActivations() const;
 
     friend std::ostream &operator<<(std::ostream &os, const Neuron &neuron);
 };
