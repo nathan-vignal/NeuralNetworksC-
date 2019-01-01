@@ -7,15 +7,17 @@
 class Layer
 {
 
-    private:
-        std::vector<Neuron *> neurons;
+private:
+    std::vector<Neuron *> neurons;
+public:
 
-    public:
-        Layer(const unsigned short & nbNeurons);
-        virtual ~Layer();
-        std::vector <std::vector<float>> getMyactivations();
-        std::vector<float> getTheLastBatchActivation();
-        void processMyNeuronsActivations(const std::vector <std::vector<float>> & previousLayerActivation);
+    Layer(const unsigned short & nbNeurons,const unsigned short & nbNeuronsInPreviousLayer);
+    virtual ~Layer();
+    unsigned short getNumberOfNeurons();
+    std::vector <std::vector<float>>  getMyactivations();
+    std::vector<float> getTheLastBatchActivation();
+    void processMyNeuronsActivations(const std::vector <std::vector<float>> & previousLayerActivations);
+    friend std::ostream& operator<< (std::ostream& stream, Layer & layer);
 
 };
 

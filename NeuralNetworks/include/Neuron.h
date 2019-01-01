@@ -17,9 +17,9 @@ public:
         std::vector<float> weights;
         float bias;
     public:
-        Neuron(const unsigned short & nbNeurons);
+        Neuron( const unsigned short & nbWeights );
         virtual ~Neuron();
-        void processActivation(const std::vector<float>& previousLayerActivations);
+        void processActivations(const std::vector<std::vector<float>>& previousLayerActivations);
         float sigmoid(float x);
         static std::vector<float> hadamardProduct(const std::vector<float> & vector1 ,const std::vector<float> & vector2 );
 

@@ -6,9 +6,12 @@
 unsigned short Neuron::maxWeight = 10;
 unsigned short Neuron::maxBias = 10;
 
-Neuron::Neuron(const unsigned short & nbNeurons)
-{
-    for(unsigned i =0;i<nbNeurons;++i){
+Neuron::Neuron( const unsigned short & nbWeights )
+{   std::cout << "new neuron";
+
+
+    /* initialisation des poids est des biais*/
+    for(unsigned i =1;i<nbWeights;++i){
         if(rand()%2)
             weights.emplace_back( -1 *rand() % maxWeight);
         else{
@@ -17,6 +20,11 @@ Neuron::Neuron(const unsigned short & nbNeurons)
 
     }
     bias = rand()% maxBias;
+    if(rand()%2)
+        bias *= -1;
+
+    for(auto weight: weights)
+        std::cout << weight;
 
 
 
@@ -32,14 +40,18 @@ float Neuron::sigmoid(float x) {
     return( 1/(1+float(exp(-x))));
 }
 
-void Neuron::processActivation(const std::vector<float> &previousLayerActivations) {
-    float myActivation = 0;
-    for(const float & activation: hadamardProduct(weights,previousLayerActivations)){
-        myActivation += activation;
-    }
-    activations.emplace_back(myActivation) ;
+void Neuron::processActivations(const std::vector<std::vector<float>> &previousLayerActivations) {
 
+    for(const std::vector<float> & layerActivation : previousLayerActivations){
+        float sum=0;
+        for(auto preActivation : hadamardProduct(layerActivation,weights))
+            sum += preActivation;
+        sum += bias;
+        activations.emplace_back(sum) ;
+    }
 }
+
+
 
 
 std::vector<float> Neuron::hadamardProduct(const std::vector<float> & vector1, const std::vector<float> & vector2) {
@@ -68,7 +80,7 @@ const float & Neuron::getLastActivations() const {
 
 std::ostream &operator<<(std::ostream &os, const Neuron &neuron){
     for (auto activation : neuron.weights ) // mettre activations
-        os << activation << ' ';
+        os << activation << "     ";
 
 
     return os;

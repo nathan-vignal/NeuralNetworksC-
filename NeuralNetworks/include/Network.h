@@ -7,15 +7,17 @@
 class Network
 {
     private:
-    std::vector<std::vector<int> > cost;    //essayer de passer en array pour gagner en perf
-    std::vector<std::vector<int> > entries;
-    std::vector<std::vector<int> > output;
-    std::vector<Layer> layers;
+    std::vector<std::vector<float> > cost;    //essayer de passer en array pour gagner en perf
+    std::vector<std::vector<float> > entries;
+    std::vector<std::vector<float> > output;
+    std::vector<Layer *> layers;
+public:
+    const std::vector<Layer *> &getLayers() const;
 
 
-    public:
-        Network(const unsigned short & nbLayers,const unsigned short & nbNeurons,const std::vector<std::vector<int> > & _entries,
-                const std::vector<std::vector<int> > & _output  );
+public:
+        Network(const unsigned short & nbLayers,const unsigned short & nbNeurons,const std::vector<std::vector<float> > & _entries,
+                const std::vector<std::vector<float> > & _output  );
         virtual ~Network();
 
         void feedforward();

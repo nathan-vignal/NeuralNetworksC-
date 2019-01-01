@@ -1,23 +1,48 @@
+#include <iostream>
 #include "Network.h"
 using namespace std;
 Network::Network(const unsigned short &nbLayer, const unsigned short &nbNeuron,
-                 const std::vector<std::vector<int> > &_entries, const std::vector<std::vector<int> > &_output) {
+                 const std::vector<std::vector<float> > &_entries, const std::vector<std::vector<float> > &_output) {
     entries = _entries;
     output = _output;
-    for (unsigned i=0; i<nbLayer; ++i){
-        layers.emplace_back( Layer(nbNeuron));  //emplace_back plus opti que push_back
+    //Layer(number of neurons, number of Neurons In the Previous Layer );
+    Layer firstLayer = Layer(nbNeuron,(unsigned short)entries[0].size());
+    layers.emplace_back(&firstLayer );  //emplace_back plus opti que push_back
+
+    for (unsigned i=1; i<nbLayer-1; ++i){
+        auto * layer = new Layer(nbNeuron,nbNeuron);
+        layers.emplace_back( layer );  //emplace_back plus opti que push_back
     }
+
+
+
+    Layer lastLayer = Layer((unsigned short)output[0].size(),nbNeuron);
+    layers.emplace_back(&lastLayer );  //emplace_back plus opti que push_back
 }
 
 Network::~Network() {
     //dtor
 }
 
+
+
+void Network::feedforward() {
+    layers[0]->processMyNeuronsActivations(entries);
+
+    for(unsigned i=1; i < layers.size(); ++i){
+        layers[i]->processMyNeuronsActivations(layers[i-1]->getMyactivations());
+    }
+}
+
 std::ostream& operator<< (std::ostream& stream, Network & network){
-    for ( const auto & batchOutput : network.output )
-        for ( const auto & neuronOutput : batchOutput )
-        stream << neuronOutput << endl;
+    cout << "\nnetwork : ";
+    for ( const auto  layer : network.layers )
+        stream <<  layer<< endl;
     return stream;
+}
+
+const vector<Layer *> &Network::getLayers() const {
+    return layers;
 }
 
 
