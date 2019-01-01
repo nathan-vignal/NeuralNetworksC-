@@ -13,9 +13,9 @@ class Layer
     public:
         Layer(const unsigned short & nbNeurons);
         virtual ~Layer();
-        std::vector<std::vector <std::vector<int>>> getMyactivations();
-        std::vector <std::vector<int>> getTheLastBatchActivation();
-        void processMyNeuronsActivations(std::vector <std::vector<int>> * previousLayerActivation);
+        std::vector <std::vector<float>> getMyactivations();
+        std::vector<float> getTheLastBatchActivation();
+        void processMyNeuronsActivations(const std::vector <std::vector<float>> & previousLayerActivation);
 
 };
 
