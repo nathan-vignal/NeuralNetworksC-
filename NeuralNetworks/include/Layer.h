@@ -15,7 +15,6 @@ public:
     virtual ~Layer();
     unsigned short getNumberOfNeurons();
     std::vector <std::vector<float>>  getMyactivations();
-    std::vector<float> getTheLastBatchActivation();
     void processMyNeuronsActivations(const std::vector <std::vector<float>> & previousLayerActivations);
     friend std::ostream& operator<< (std::ostream& stream, Layer & layer);
 

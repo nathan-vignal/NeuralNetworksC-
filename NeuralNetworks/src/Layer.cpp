@@ -2,11 +2,8 @@
 #include "Layer.h"
 Layer::Layer(const unsigned short &nbNeurons, const unsigned short &nbNeuronsInPreviousLayer) {
 
-    std::cout << "\nnew layer";
     for(unsigned i = 0; i<nbNeurons;++i){
-        std::cout <<"  nb weights    " <<nbNeuronsInPreviousLayer<< "   ";
         auto * neuron = new Neuron(nbNeuronsInPreviousLayer);
-        std::cout << neuron;
         neurons.emplace_back( neuron );
     }
 
@@ -18,27 +15,20 @@ Layer::~Layer()
 }
 
  std::vector <std::vector<float>>  Layer::getMyactivations() {
-    std::vector <std::vector<float>> result;
-    for(Neuron * neuron: neurons){
-        result.emplace_back(neuron->getActivations());
+    std::vector <std::vector<float>> result(neurons[0]->getActivations().size());
+    for(unsigned short i = 0; i< neurons[0]->getActivations().size(); ++i){
+        for(Neuron * neuron: neurons){
+            result[i].emplace_back(neuron->getActivation(i));
+        }
     }
     return result;
 }
 
-std::vector<float> Layer::getTheLastBatchActivation() {
-    std::vector<float> result;
-    for(Neuron * neuron: neurons){
-        result.emplace_back(neuron->getLastActivations());
-    }
-
-    return  result;
-
-
-}
 
 
 void Layer::processMyNeuronsActivations(const std::vector<std::vector<float>> &previousLayerActivations) {
     for(auto neuron: neurons){
+
         neuron->processActivations(previousLayerActivations);
     }
 
@@ -46,13 +36,17 @@ void Layer::processMyNeuronsActivations(const std::vector<std::vector<float>> &p
 
 
 std::ostream& operator<<(std::ostream &stream, Layer &layer) {
-    std::cout << "neuron";
-    for (Neuron *neuron : layer.neurons) {
 
-        stream << neuron;
+    for (Neuron *neuron : layer.neurons) {
+        stream << * neuron;
     }
 
 
     return stream;
+}
+
+unsigned short Layer::getNumberOfNeurons() {
+    return (unsigned short)neurons.size();
+
 }
 

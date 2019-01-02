@@ -6,27 +6,14 @@ using namespace std;
 
 int main()
 {
-    /*
-    for(unsigned i=0 ; i<10 ; ++i){
-        unsigned j(0);
-        cout << j<< endl;
-        ++j;
 
-    } */
+    vector<vector<float>> input = {{0,0,0,0}};//,{2,3,4,5}
+    vector<vector<float>> output = {{0,1,1,0}};//,{5,4,3,2}
+                    //Network(nombre de layer, nombre de neuron par layer, input, output)
+    Network network((unsigned short)4,(unsigned short)100,input,output);
 
- /*   cout << "machacar" << endl;
-    Layer layer0(4,2);
-    Layer layer1(4,2);
-    cout << &layer0<< endl;
-    cout << &layer1<< endl;
-*/
 
-    vector<vector<float>> input = {{1,1,1,0}};
-    vector<vector<float>> output = {{1,1,1,0}};
-    Network network((unsigned short)4,(unsigned short)4,input,output);
-
+    network.feedforward();
     cout << network;
-    //network.feedforward();
-
     return 0;
 }

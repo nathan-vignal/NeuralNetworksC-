@@ -27,7 +27,7 @@ public:
 
         //accesseurs
         const std::vector<float> & getActivations() const;
-        const float & getLastActivations() const;
+        const float & getActivation(const unsigned short adress );
 
     friend std::ostream &operator<<(std::ostream &os, const Neuron &neuron);
 };
