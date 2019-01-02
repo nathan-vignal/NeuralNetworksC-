@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Network.h"
+#include <math.h>
 using namespace std;
 Network::Network(const unsigned short &nbLayer, const unsigned short &nbNeuron,
                  const std::vector<std::vector<float> > &_entries, const std::vector<std::vector<float> > &_output) {
@@ -44,4 +45,26 @@ std::ostream& operator<< (std::ostream& stream, Network & network) {
 
 const vector<Layer *> &Network::getLayers() const {
     return layers;
+}
+
+void Network::processCost() {
+    std::vector<std::vector<float>> lastLayerActivations = getLayers()[getLayers().size()-1]->getMyactivations();
+
+    for(unsigned neuronNumber = 0; neuronNumber < lastLayerActivations[0].size(); ++neuronNumber ){
+        float cost = 0;
+        for(unsigned feedForwardNumber = 0; feedForwardNumber < lastLayerActivations.size(); ++feedForwardNumber){//feedForwardNumber is the number of the entry that was used to process this activation
+            cout << "feed forward = " << feedForwardNumber << " neuron Number = " << neuronNumber <<endl;
+            cost += (output[feedForwardNumber][neuronNumber] * log(lastLayerActivations[feedForwardNumber][neuronNumber])
+                        + (1- output[feedForwardNumber][neuronNumber])* log(1- lastLayerActivations[feedForwardNumber][neuronNumber]));
+            //  the formula used is cross entropy c = y * ln(a) + (1-y) * ln(1-a)
+                            //        y = output[feedForwardNumber][neuronNumber]  a= lastLayerActivations[feedForwardNumber][neuronNumber]
+        }
+        cost *= float(-1)/lastLayerActivations.size();
+        this->cost.emplace_back(cost);
+    }
+
+}
+
+const vector<float> &Network::getCost() const {
+    return cost;
 }

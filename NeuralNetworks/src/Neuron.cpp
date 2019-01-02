@@ -75,8 +75,8 @@ const float& Neuron::getActivation(const unsigned short adress) {
 }
 
 std::ostream &operator<<(std::ostream &os, const Neuron &neuron){
-    for (auto activation : neuron.weights) // mettre activations
-        os << activation ;
+    for (auto activation : neuron.activations) // mettre activations
+        os << & neuron ;
     os << "  ";
 
     return os;

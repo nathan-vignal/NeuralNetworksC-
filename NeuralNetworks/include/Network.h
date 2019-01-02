@@ -7,9 +7,15 @@
 class Network
 {
     private:
-    std::vector<std::vector<float> > cost;    //essayer de passer en array pour gagner en perf
+    std::vector<float> cost;
+public:
+    const std::vector<float> &getCost() const;
+
+private:
+    //essayer de passer en array pour gagner en perf
     std::vector<std::vector<float> > entries;
     std::vector<std::vector<float> > output;
+    float tauxApprentissage = 0.15;
     std::vector<Layer *> layers;
 public:
     const std::vector<Layer *> &getLayers() const;
@@ -22,6 +28,7 @@ public:
 
         void feedforward();
         void processCost();
+
         friend std::ostream& operator<< (std::ostream& stream, Network & network);
 };
 
