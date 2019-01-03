@@ -29,6 +29,7 @@ public:
     void feedforward( unsigned short numberOfTheEpoch);
     void processCost();
     void resetActivations();
+    void vectorResizing(std::vector<std::vector<float>> vector, unsigned rows, unsigned columns );
 
     friend std::ostream& operator<< (std::ostream& stream, Network & network);
 };

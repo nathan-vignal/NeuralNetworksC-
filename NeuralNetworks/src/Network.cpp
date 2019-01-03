@@ -80,6 +80,22 @@ const vector<float> &Network::getCost() const {
     return cost;
 }
 
+void Network::vectorResizing(std::vector<std::vector<float>> vector, unsigned rows, unsigned columns) {
+    vector.resize(rows);
+    for ( auto &it : vector) {
+        it.resize(columns);
+    }
+}
+
+std::vector<std::vector<float>> functionSquare(std::vector<std::vector<float>> entree) {
+    std::vector<std::vector<float>> attendu = entree;
+    for (unsigned i(0); i < attendu.size(); ++i) {
+        for(unsigned j(0); j < attendu[i].size(); ++j) {
+            attendu[i][j] = attendu[i][j] * attendu[i][j];
+        }
+    }
+    return attendu;
+}
 
 void Network::resetActivations() {
     for(Layer * layer : layers){
@@ -95,3 +111,9 @@ void Network::main() {
         resetActivations();
     }
 }
+
+
+
+
+
+
