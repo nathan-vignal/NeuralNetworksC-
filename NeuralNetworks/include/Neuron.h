@@ -29,6 +29,8 @@ public:
         const std::vector<float> & getActivations() const;
         const float & getActivation(const unsigned short adress );
 
+        void resetActivations();
+
     friend std::ostream &operator<<(std::ostream &os, const Neuron &neuron);
 };
 

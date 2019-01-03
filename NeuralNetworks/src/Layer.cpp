@@ -38,7 +38,7 @@ void Layer::processMyNeuronsActivations(const std::vector<std::vector<float>> &p
 std::ostream& operator<<(std::ostream &stream, Layer &layer) {
 
     for (Neuron *neuron : layer.neurons) {
-        stream << * neuron;
+        stream <<  * neuron;
     }
 
 
@@ -48,5 +48,10 @@ std::ostream& operator<<(std::ostream &stream, Layer &layer) {
 unsigned short Layer::getNumberOfNeurons() {
     return (unsigned short)neurons.size();
 
+}
+void Layer::resetActivations() {
+    for(auto neuron : neurons ){
+        neuron->resetActivations();
+    }
 }
 

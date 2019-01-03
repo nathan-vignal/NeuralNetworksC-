@@ -50,7 +50,7 @@ std::vector<float> Neuron::hadamardProduct(const std::vector<float> & vector1, c
     std::vector<float> result;
     try {
         if ( vector1.size() != vector2.size()){
-            std::cout <<vector1.size() << "les vecteurs ne sont pas de la même taille"<<vector2.size() <<std::endl ;
+            std::cout <<vector1.size() << " les vecteurs ne sont pas de la même taille "<<vector2.size() <<std::endl ;
             throw "les vecteurs ne sont pas de la même taille";}
     }
     catch(const std::string & message) {
@@ -75,10 +75,14 @@ const float& Neuron::getActivation(const unsigned short adress) {
 }
 
 std::ostream &operator<<(std::ostream &os, const Neuron &neuron){
-    for (auto activation : neuron.activations) // mettre activations
-        os << & neuron ;
+    for (auto activation : neuron.weights) // mettre activations
+        os <<  activation ;
     os << "  ";
 
     return os;
 
+}
+
+void Neuron::resetActivations() {
+    activations.clear();
 }

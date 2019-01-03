@@ -16,6 +16,7 @@ public:
     unsigned short getNumberOfNeurons();
     std::vector <std::vector<float>>  getMyactivations();
     void processMyNeuronsActivations(const std::vector <std::vector<float>> & previousLayerActivations);
+    void resetActivations();
     friend std::ostream& operator<< (std::ostream& stream, Layer & layer);
 
 };
