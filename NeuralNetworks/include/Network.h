@@ -28,6 +28,7 @@ public:
 
         void feedforward();
         void processCost();
+        void vectorResizing(std::vector<std::vector<float>> vector, unsigned rows, unsigned columns );
 
         friend std::ostream& operator<< (std::ostream& stream, Network & network);
 };
