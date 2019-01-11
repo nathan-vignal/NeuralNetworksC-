@@ -17,6 +17,7 @@ Neuron::Neuron( const unsigned short & nbWeights )
 
 
     }
+
     bias = rand()% maxBias;
     if(rand()%2)
         bias *= -1;
@@ -86,3 +87,11 @@ std::ostream &operator<<(std::ostream &os, const Neuron &neuron){
 void Neuron::resetActivations() {
     activations.clear();
 }
+
+void Neuron::processLastNeuronError(std::vector<float> activationBP) {
+
+    for ( unsigned i = 0; i < activationBP.size() - 1; ++i ) {
+        this->error.emplace_back(this->getActivation(i) - activationBP[i]);
+    }
+}
+

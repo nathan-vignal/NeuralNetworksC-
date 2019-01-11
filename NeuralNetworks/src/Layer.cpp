@@ -19,6 +19,7 @@ Layer::~Layer()
     for(unsigned short i = 0; i< neurons[0]->getActivations().size(); ++i){
         for(Neuron * neuron: neurons){
             result[i].emplace_back(neuron->getActivation(i));
+
         }
     }
     return result;
@@ -54,4 +55,19 @@ void Layer::resetActivations() {
         neuron->resetActivations();
     }
 }
+
+void Layer::processLastLayerError(std::vector<std::vector<float>> output){
+
+
+    for(unsigned neuronNumber=0; neuronNumber<neurons.size()-1;++neuronNumber){
+        std::vector<float> outputForTheNeuronN;
+        for(unsigned feedForwardNumber=0; feedForwardNumber<output.size()-1; ++feedForwardNumber){
+            outputForTheNeuronN.emplace_back(output[feedForwardNumber][neuronNumber]);
+        }
+        neurons[neuronNumber]->processLastNeuronError(outputForTheNeuronN);
+        outputForTheNeuronN.clear();
+    }
+
+}
+
 

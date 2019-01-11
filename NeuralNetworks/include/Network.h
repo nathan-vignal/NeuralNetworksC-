@@ -30,7 +30,7 @@ public:
     void processCost();
     void resetActivations();
     void vectorResizing(std::vector<std::vector<float>> vector, unsigned rows, unsigned columns );
-
+    void backPropagation();
     friend std::ostream& operator<< (std::ostream& stream, Network & network);
 };
 

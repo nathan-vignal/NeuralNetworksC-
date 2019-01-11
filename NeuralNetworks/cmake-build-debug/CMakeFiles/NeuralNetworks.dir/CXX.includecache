@@ -26,23 +26,33 @@ ostream
 random
 -
 
-C:/Users/VIG/Desktop/iut/c++/NeuralNetworks/main.cpp
+/Users/theopoujol/CLionProjects/NeuralNetworksC-/NeuralNetworks/main.cpp
+iostream
+-
+vector
+-
+Network.h
+/Users/theopoujol/CLionProjects/NeuralNetworksC-/NeuralNetworks/Network.h
+
+/Users/theopoujol/CLionProjects/NeuralNetworksC-/NeuralNetworks/src/Layer.cpp
+iostream
+-
+Layer.h
+/Users/theopoujol/CLionProjects/NeuralNetworksC-/NeuralNetworks/src/Layer.h
+
+/Users/theopoujol/CLionProjects/NeuralNetworksC-/NeuralNetworks/src/Network.cpp
 iostream
 -
 Network.h
-C:/Users/VIG/Desktop/iut/c++/NeuralNetworks/Network.h
+/Users/theopoujol/CLionProjects/NeuralNetworksC-/NeuralNetworks/src/Network.h
+math.h
+-
 
-C:/Users/VIG/Desktop/iut/c++/NeuralNetworks/src/Layer.cpp
-Layer.h
-C:/Users/VIG/Desktop/iut/c++/NeuralNetworks/src/Layer.h
-
-C:/Users/VIG/Desktop/iut/c++/NeuralNetworks/src/Network.cpp
-Network.h
-C:/Users/VIG/Desktop/iut/c++/NeuralNetworks/src/Network.h
-
-C:/Users/VIG/Desktop/iut/c++/NeuralNetworks/src/Neuron.cpp
+/Users/theopoujol/CLionProjects/NeuralNetworksC-/NeuralNetworks/src/Neuron.cpp
 Neuron.h
-C:/Users/VIG/Desktop/iut/c++/NeuralNetworks/src/Neuron.h
+/Users/theopoujol/CLionProjects/NeuralNetworksC-/NeuralNetworks/src/Neuron.h
 random
+-
+iostream
 -
 

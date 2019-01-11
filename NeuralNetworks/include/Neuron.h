@@ -15,6 +15,7 @@ public:
 
         std::vector<float> activations;
         std::vector<float> weights;
+        std::vector<float> error;
         float bias;
     public:
         Neuron( const unsigned short & nbWeights );
@@ -29,7 +30,9 @@ public:
         const std::vector<float> & getActivations() const;
         const float & getActivation(const unsigned short adress );
 
+
         void resetActivations();
+        void processLastNeuronError(std::vector<float> activationBP);
 
     friend std::ostream &operator<<(std::ostream &os, const Neuron &neuron);
 };

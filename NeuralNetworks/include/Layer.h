@@ -17,6 +17,7 @@ public:
     std::vector <std::vector<float>>  getMyactivations();
     void processMyNeuronsActivations(const std::vector <std::vector<float>> & previousLayerActivations);
     void resetActivations();
+    void processLastLayerError(std::vector<std::vector<float>> output);
     friend std::ostream& operator<< (std::ostream& stream, Layer & layer);
 
 };

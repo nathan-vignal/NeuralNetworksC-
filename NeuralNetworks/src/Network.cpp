@@ -112,6 +112,18 @@ void Network::main() {
     }
 }
 
+void Network::backPropagation(){
+    //process the partial derivative with respect to z for each layer
+
+    layers[layers.size()]->processLastLayerError(output); //process the partial derivative of c with respect to z for the last layer
+    for(unsigned i = 0 ; i< layers.size()-1; ++i){ //use the partial derivative c/z of the n+1 layer to process it for n
+        //layer-> processPartialDerivativeZ();
+
+    }
+}
+
+
+
 
 
 
