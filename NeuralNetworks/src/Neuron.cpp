@@ -33,6 +33,12 @@ float Neuron::sigmoid(float x) {
     return( 1/(1+float(exp(-x))));
 }
 
+float Neuron::sigmoidPrime(float x) {
+    return( sigmoid(x)*(1-sigmoid(x)));
+}
+
+
+
 void Neuron::processActivations(const std::vector<std::vector<float>> &previousLayerActivations) {
 
     for(const std::vector<float> & layerActivation : previousLayerActivations){

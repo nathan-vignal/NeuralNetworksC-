@@ -24,7 +24,7 @@ public:
         void processActivations(const std::vector<std::vector<float>>& previousLayerActivations);
         float sigmoid(float x);
         static std::vector<float> hadamardProduct(const std::vector<float> & vector1 ,const std::vector<float> & vector2 );
-
+        float sigmoidPrime(float x);
 
 
         //accesseurs
