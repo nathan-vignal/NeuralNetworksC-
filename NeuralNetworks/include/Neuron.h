@@ -14,6 +14,7 @@ public:
 
 
         std::vector<float> activations;
+        std::vector<float> preActivation;
         std::vector<float> weights;
         std::vector<float> error;
         float bias;

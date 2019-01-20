@@ -45,7 +45,7 @@ void Network::feedforward(const unsigned short numberOfTheEpoch) {
 }
 
 std::ostream& operator<< (std::ostream& stream, Network & network) {
-    cout << "\nnetwork : "<< network.layers.size() << '\n';
+    cout << "\nnetwork of "<< network.layers.size()<<" layers :" << '\n';
     for (const auto layer : network.layers) {
         stream << " layer ";
         stream <<  * layer<<endl;
@@ -57,7 +57,9 @@ std::ostream& operator<< (std::ostream& stream, Network & network) {
 const vector<Layer *> &Network::getLayers() const {
     return layers;
 }
-
+/**
+ * process network global cost for each feedforward
+ */
 void Network::processCost() {
     cost.clear();
     std::vector<std::vector<float>> lastLayerActivations = getLayers()[getLayers().size()-1]->getMyactivations();
@@ -107,7 +109,7 @@ void Network::main() {
     for(unsigned short i=0 ; i<numberOfEpochs; ++i){
         feedforward(i);
         processCost();
-        //backpropagation
+        backPropagation();
         resetActivations();
     }
 }
@@ -115,9 +117,10 @@ void Network::main() {
 void Network::backPropagation(){
     //process the partial derivative with respect to z for each layer
 
-    layers[layers.size()]->processLastLayerError(output); //process the partial derivative of c with respect to z for the last layer
-    for(unsigned i = 0 ; i< layers.size()-1; ++i){ //use the partial derivative c/z of the n+1 layer to process it for n
-        //layer-> processPartialDerivativeZ();
+    layers[layers.size()-1]->processLastLayerError(output); //process the partial derivative of c with respect to z for the last layer
+    for(unsigned i = layers.size()-2 ; i > 0; --i){ //use the partial derivative c/z of the n+1 layer to process it for n
+        cout << "hi";
+        // *layers[i]->processLayerError();
 
     }
 }

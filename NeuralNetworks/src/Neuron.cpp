@@ -40,6 +40,7 @@ void Neuron::processActivations(const std::vector<std::vector<float>> &previousL
         for(auto preActivation : hadamardProduct(layerActivation,weights))
             sum += preActivation;
         sum += bias;
+        preActivation.emplace_back(sum);
         activations.emplace_back(sigmoid(sum)) ;
     }
 }
@@ -76,7 +77,7 @@ const float& Neuron::getActivation(const unsigned short adress) {
 }
 
 std::ostream &operator<<(std::ostream &os, const Neuron &neuron){
-    for (auto activation : neuron.weights) // mettre activations
+    for (auto activation : neuron.activations) // mettre activations
         os <<  activation ;
     os << "  ";
 
