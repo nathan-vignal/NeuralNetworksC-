@@ -3,6 +3,7 @@
 #include <vector>
 #include <ostream>
 #include <random>
+#include "Layer.h"
 
 class Neuron
 {
@@ -17,7 +18,11 @@ public:
         std::vector<float> preActivation;
         std::vector<float> weights;
         std::vector<float> error;
-        float bias;
+public:
+    const std::vector<float> &getError() const;
+
+private:
+    float bias;
     public:
         Neuron( const unsigned short & nbWeights );
         virtual ~Neuron();
@@ -27,10 +32,11 @@ public:
         float sigmoidPrime(float x);
 
 
+
         //accesseurs
         const std::vector<float> & getActivations() const;
         const float & getActivation(const unsigned short adress );
-
+        void gradientDescent();
 
         void resetActivations();
         void processLastNeuronError(std::vector<float> activationBP);

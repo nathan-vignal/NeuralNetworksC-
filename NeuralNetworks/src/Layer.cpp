@@ -71,10 +71,16 @@ void Layer::processLastLayerError(std::vector<std::vector<float>> output){
         //donne au neuron le vecteur des valeurs attendu pour qu'il calcule son erreur
         neurons[neuronNumber]->processLastNeuronError(outputForTheNeuronN);
         outputForTheNeuronN.clear();
+
+
     }
 
 }
+void Layer::layerGradientDescent(Layer *nextLayer) {
 
+    for (auto neuron : neurons){
+    }
+}
 void Layer::processLayerError() {
 
 

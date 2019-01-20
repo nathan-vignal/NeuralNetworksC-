@@ -18,8 +18,14 @@ public:
     void processMyNeuronsActivations(const std::vector <std::vector<float>> & previousLayerActivations);
     void resetActivations();
     void processLastLayerError(std::vector<std::vector<float>> output);
-
+    std::vector<std::vector<float>> getNeuronErrors(){
+        std::vector<std::vector<float>> neuronsError;
+        for(auto neuron : neurons){
+            neuronsError.emplace_back(neuron->getError());
+        }
+    }
     void processLayerError();
+    void layerGradientDescent(Layer *nextLayer);
 
     friend std::ostream& operator<< (std::ostream& stream, Layer & layer);
 
