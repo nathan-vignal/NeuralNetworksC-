@@ -18,7 +18,6 @@ public:
         std::vector<float> weights;
         std::vector<float> error;
         float my_error;
-
         float bias;
     public:
         Neuron( const unsigned short & nbWeights );
@@ -36,6 +35,7 @@ public:
         std::vector<float> getWeights();
         float getMyError();
 
+        void gradientDescent();
 
         void resetActivations();
         void processLastNeuronError(std::vector<float> activationBP);

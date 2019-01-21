@@ -2,6 +2,8 @@
 #include "Network.h"
 #include <math.h>
 using namespace std;
+
+const float Network::learningRate = 0.15;
 Network::Network(const unsigned short &nbLayer, const unsigned short &nbNeuron,
                  const std::vector<std::vector<float> > &_entries, const std::vector<std::vector<float> > &_output
         , const unsigned short & _numberOfEpochs) {
@@ -110,6 +112,7 @@ void Network::main() {
         feedforward(i);
         processCost();
         backPropagation();
+        gradientDescent();
         resetActivations();
     }
 }
@@ -123,6 +126,10 @@ void Network::backPropagation(){
         // *layers[i]->processLayerError();
 
     }
+}
+
+void Network::gradientDescent() {
+
 }
 
 
