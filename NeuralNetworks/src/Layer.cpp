@@ -74,19 +74,19 @@ void Layer::processLastLayerError(std::vector<std::vector<float>> output){
     }
 
 }
-/*
 void Layer::processLayerError(Layer nextLayer) {
 
     float error;
 
     for (unsigned i(0); i < getErrorFromVector().size() -1; ++i) {
-        for (unsigned j(0); j < nextLayer.getNeuronWeight().size() -1; ++j) {
-            error += nextLayer.getNeuronWeight()[j] * nextLayer.getErrorFromVector()[j];
-        }
-        getErrorFromVector()[i] = error * Neuron::sigmoidPrime(neurons[i]->getPreActivation()[i]);
+       /*for (unsigned j(0); j < nextLayer.getWeightFromVector().size()-1; ++j) {
+           // error += nextLayer.getWeightFromVector()[j] * nextLayer.getErrorFromVector()[j];
+        }*/
+        //getErrorFromVector()[i] = error * Neuron::sigmoidPrime(neurons[i]->getPreActivation()[i]);
     }
 
-}*/
+}
+
 
 std::vector<float> Layer::getErrorFromVector() {
     std::vector<float> errorFromVector;
@@ -131,4 +131,13 @@ std::vector<std::vector<float>> Layer::getNeuronErrors(){
     }
     return neuronsError;
 
+}
+std::vector<float> Layer::getWeightFromVector() {
+    std::vector<float> weightFromVector;
+    for(auto w : this->getNeuronWeight()) {
+        for (unsigned i(0); i < w.size() -1; ++i) {
+            weightFromVector.emplace_back(w[i]);
+        }
+    }
+    return weightFromVector;
 }

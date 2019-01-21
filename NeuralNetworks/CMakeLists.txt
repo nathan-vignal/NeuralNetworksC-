@@ -9,6 +9,8 @@ add_executable(NeuralNetworks
         include/Layer.h
         include/Network.h
         include/Neuron.h
+        include/Feeder.h
+        src/Feeder.cpp
         src/Layer.cpp
         src/Network.cpp
         src/Neuron.cpp

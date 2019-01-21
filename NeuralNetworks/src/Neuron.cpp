@@ -98,6 +98,8 @@ std::ostream &operator<<(std::ostream &os, const Neuron &neuron){
 
 void Neuron::resetActivations() {
     activations.clear();
+    error.clear();
+    preActivation.clear();
 }
 
 void Neuron::processLastNeuronError(std::vector<float> activationBP) {

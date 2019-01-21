@@ -27,6 +27,7 @@ public:
     const std::vector<Layer *> &getLayers() const;
     void main();
     void feedforward( unsigned short numberOfTheEpoch);
+    std::vector<float> testFeedforward(std::vector<float> entries);
     void processCost();
     void resetActivations();
     void vectorResizing(std::vector<std::vector<float>> vector, unsigned rows, unsigned columns );

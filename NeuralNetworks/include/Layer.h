@@ -20,12 +20,12 @@ public:
     void processLastLayerError(std::vector<std::vector<float>> output);
     void processLayerError(Layer nextLayer);
     std::vector<float> getErrorFromVector();
+    std::vector<float> getWeightFromVector();
     std::vector<std::vector<float>> getNeuronErrors();
     void layerGradientDescent(std::vector<std::vector<float>> PreviousLayerActivation);
 
     std::vector<std::vector<float>> getNeuronWeight();
     friend std::ostream& operator<< (std::ostream& stream, Layer & layer);
-
 };
 
 #endif // LAYER_H

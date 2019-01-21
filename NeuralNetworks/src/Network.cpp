@@ -36,15 +36,22 @@ Network::~Network() {
 
 
 void Network::feedforward(const unsigned short numberOfTheEpoch) {
-    /* std::vector<int>   data();
-     // Load Z elements into data so that Z > Y > X
-
-     std::vector<int>   sub(&data[100000],&data[101000]);*/
     layers[0]->processMyNeuronsActivations(entries[numberOfTheEpoch]);
     for(unsigned i=1; i < layers.size(); ++i){
         layers[i]->processMyNeuronsActivations(layers[i-1]->getMyactivations());
     }
 }
+
+std::vector<float> Network::testFeedforward(std::vector<float> entries) {
+    layers[0]->processMyNeuronsActivations({entries});
+    for(unsigned i=1; i < layers.size(); ++i){
+        layers[i]->processMyNeuronsActivations(layers[i-1]->getMyactivations());
+    }
+    //return layers[layers.size()-1]->getMyactivations()[0];
+    std::vector<float> azer= {0,1,0,2};
+    return(azer);
+}
+
 
 std::ostream& operator<< (std::ostream& stream, Network & network) {
     cout << "\nnetwork of "<< network.layers.size()<<" layers :" << '\n';
@@ -110,20 +117,22 @@ void Network::resetActivations() {
 void Network::main() {
     for(unsigned short i=0 ; i<numberOfEpochs; ++i){
         feedforward(i);
+
         processCost();
-        backPropagation();
-        gradientDescent();
+        backPropagation();/*
+        gradientDescent();*/
         resetActivations();
     }
 }
 
 void Network::backPropagation(){
     //process the partial derivative with respect to z for each layer
-
+    cout << "passage dans backpropagation";
     layers[layers.size()-1]->processLastLayerError(output); //process the partial derivative of c with respect to z for the last layer
-    for(unsigned i = layers.size()-2 ; i > 0; --i){ //use the partial derivative c/z of the n+1 layer to process it for n
+
+    for(unsigned i = (unsigned)layers.size()-2 ; i > 0; --i){ //use the partial derivative c/z of the n+1 layer to process it for n
         cout << "hi";
-        // *layers[i]->processLayerError();
+        layers[i]->processLayerError(*layers[i+1]);
 
     }
 }

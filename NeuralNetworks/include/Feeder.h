@@ -11,7 +11,7 @@
 class Feeder {
 
 public :
-    static  std::vector<std::pair<std::vector<float >,std::vector<float>>> entrieExit;
+    static std::vector<std::pair<std::vector<float >,std::vector<float>>> entrieExit;
     static void createData( std::vector<std::vector<float>>  & entries, std::vector<std::vector<float> > & outputs);
     static void  initEntrieAndExit();
 

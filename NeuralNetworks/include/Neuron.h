@@ -21,7 +21,6 @@ public:
 private:
     std::vector<float> weights;
         std::vector<float> error;
-        float my_error;
         float bias;
     public:
         Neuron( const unsigned short & nbWeights );
