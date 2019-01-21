@@ -74,7 +74,7 @@ void Layer::processLastLayerError(std::vector<std::vector<float>> output){
     }
 
 }
-
+/*
 void Layer::processLayerError(Layer nextLayer) {
 
     float error;
@@ -86,7 +86,7 @@ void Layer::processLayerError(Layer nextLayer) {
         getErrorFromVector()[i] = error * Neuron::sigmoidPrime(neurons[i]->getPreActivation()[i]);
     }
 
-}
+}*/
 
 std::vector<float> Layer::getErrorFromVector() {
     std::vector<float> errorFromVector;
@@ -98,8 +98,8 @@ std::vector<float> Layer::getErrorFromVector() {
     return errorFromVector;
 }
 
-std::vector<float> Layer::getNeuronWeight() {
-    std::vector<float> neuronsWeight;
+std::vector<std::vector<float>> Layer::getNeuronWeight() {
+    std::vector<std::vector<float>> neuronsWeight;
     for (auto neuron : neurons) {
         neuronsWeight.emplace_back(neuron->getPreActivation());
     }

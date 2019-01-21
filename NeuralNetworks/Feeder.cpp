@@ -5,7 +5,7 @@
 #include <cstdlib>
 #include "Feeder.h"
 
-
+std::vector<std::pair<std::vector<float >,std::vector<float>>> entrieExit;
 void Feeder::initEntrieAndExit(){
 
 std::pair<std::vector<float >,std::vector<float>> pair ;
