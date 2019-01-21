@@ -27,7 +27,7 @@ int main()
 
     network.main();
 
-    for(auto truc :network.testFeedforward({1,1,1,1}) ){
+    for(auto truc :network.testFeedforward({0,0,0,0}) ){
         cout<< "ne va pas afficher un truc grand "<< truc << '\n' ;
     }
 

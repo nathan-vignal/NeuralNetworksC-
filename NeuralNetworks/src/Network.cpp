@@ -125,18 +125,17 @@ void Network::main() {
 
 void Network::backPropagation(){
     //process the partial derivative with respect to z for each layer
-    cout << "passage dans backpropagation";
+    cout << "batch backpropagation"<<endl;
     layers[layers.size()-1]->processLastLayerError(output); //process the partial derivative of c with respect to z for the last layer
 
     for(unsigned i = (unsigned)layers.size()-2 ; i > 0; --i){ //use the partial derivative c/z of the n+1 layer to process it for n
-        cout << "hi";
         layers[i]->processLayerError(*layers[i+1]);
 
     }
 }
 
 void Network::gradientDescent() {
-    for(unsigned layerNumber =layers.size()-2; layerNumber>0;--layerNumber  ){
+    for(unsigned layerNumber =layers.size()-1; layerNumber>0;--layerNumber  ){
         layers[layerNumber]->layerGradientDescent(layers[layerNumber]->getMyactivations());
     }
 
