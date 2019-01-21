@@ -62,31 +62,65 @@ void Layer::resetActivations() {
 void Layer::processLastLayerError(std::vector<std::vector<float>> output){
 
 
-    for(unsigned neuronNumber=0; neuronNumber<neurons.size()-1;++neuronNumber){
+    for(unsigned neuronNumber=0; neuronNumber<neurons.size();++neuronNumber){
         std::vector<float> outputForTheNeuronN;
         //modèle le vecteur des valeurs attendu pour ce neuron, à partir du vecteur output
-        for(unsigned feedForwardNumber=0; feedForwardNumber<output.size()-1; ++feedForwardNumber){
+        for(unsigned feedForwardNumber=0; feedForwardNumber<output.size(); ++feedForwardNumber){
             outputForTheNeuronN.emplace_back(output[feedForwardNumber][neuronNumber]);
+
         }
+
         //donne au neuron le vecteur des valeurs attendu pour qu'il calcule son erreur
         neurons[neuronNumber]->processLastNeuronError(outputForTheNeuronN);
         outputForTheNeuronN.clear();
     }
 
 }
+
+void Layer::processLayerError(Layer nextLayer) {
+    /* use to debug
+    for(auto neuron : nextLayer.getNeurons()){
+        std::cout << * neuron;
+        std::cout << '\n' <<std::endl;
+    }*/
+
+    for(auto neuron : neurons){ // for each of my neurons
+        float sum = 0;
+        for(unsigned feedforwardNumber=0 ; feedforwardNumber<nextLayer.getNeuronErrors()[0].size(); ++feedforwardNumber){ //for each of the feeforwards
+            for(auto nextLayerNeuron : nextLayer.getNeurons()){ // for each of the nextLayer neurons
+                std::cout << "taille "<< nextLayer.getNeuronErrors()[0].size() << std::endl;
+               std::cout << nextLayerNeuron->getError()[feedforwardNumber];
+                 sum +=  nextLayerNeuron->getError()[feedforwardNumber] * nextLayerNeuron->getWeights()[feedforwardNumber];
+
+                //sum += weights(to the next neuron)* error(in the linked neuron)
+            }
+            sum = 0;
+            //sum /= nextLayer.getNeurons().size();
+            neuron->addError(Neuron::sigmoidPrime( neuron->getPreActivation()[feedforwardNumber])* sum);
+
+
+        }
+
+    }
+}
+
+
+
+
+/*
 void Layer::processLayerError(Layer nextLayer) {
 
     float error;
 
-    for (unsigned i(0); i < getErrorFromVector().size() -1; ++i) {
-       /*for (unsigned j(0); j < nextLayer.getWeightFromVector().size()-1; ++j) {
+   // for (unsigned i(0); i < getErrorFromVector().size() -1; ++i) {
+       for (unsigned j(0); j < nextLayer.getWeightFromVector().size()-1; ++j) {
            // error += nextLayer.getWeightFromVector()[j] * nextLayer.getErrorFromVector()[j];
-        }*/
+        }
         //getErrorFromVector()[i] = error * Neuron::sigmoidPrime(neurons[i]->getPreActivation()[i]);
-    }
+    //}
 
 }
-
+*/
 
 std::vector<float> Layer::getErrorFromVector() {
     std::vector<float> errorFromVector;
@@ -140,4 +174,8 @@ std::vector<float> Layer::getWeightFromVector() {
         }
     }
     return weightFromVector;
+}
+
+const std::vector<Neuron *> &Layer::getNeurons() const {
+    return neurons;
 }

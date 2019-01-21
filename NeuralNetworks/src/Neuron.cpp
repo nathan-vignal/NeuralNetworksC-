@@ -4,8 +4,8 @@
 #include <Network.h>
 //int Exemple::compteur = 0;
 
-unsigned short Neuron::maxWeight = 5;
-unsigned short Neuron::maxBias = 5;
+unsigned short Neuron::maxWeight = 3;
+unsigned short Neuron::maxBias = 3;
 
 Neuron::Neuron( const unsigned short & nbWeights )
 {
@@ -63,8 +63,8 @@ std::vector<float> Neuron::hadamardProduct(const std::vector<float> & vector1, c
             throw "les vecteurs ne sont pas de la même taille";}
     }
     catch(const std::string & message) {
-            std::cout << message;
-        }
+        std::cout << message;
+    }
     for(unsigned i =0 ; i<vector1.size() ; ++i )
         result.emplace_back(vector1[i] * vector2[i])  ;
     return result;
@@ -87,10 +87,12 @@ std::vector<float> Neuron::getError() {
     return error;
 }
 
-std::ostream &operator<<(std::ostream &os, const Neuron &neuron){
-    for (auto activation : neuron.activations) // mettre activations
-        os <<  activation ;
-    os << "  ";
+std::ostream &operator<<(std::ostream &os, const Neuron &neuron) {
+    for (auto activation : neuron.error) {// mettre activations
+
+        os << activation;
+        os << "  ";
+    }
 
     return os;
 
@@ -104,7 +106,7 @@ void Neuron::resetActivations() {
 
 void Neuron::processLastNeuronError(std::vector<float> activationBP) {
 
-    for ( unsigned i = 0; i < activationBP.size() - 1; ++i ) {
+    for ( unsigned i = 0; i < activationBP.size() ; ++i ) {
         this->error.emplace_back(this->getActivation(i) - activationBP[i]);
     }
 }
@@ -116,20 +118,20 @@ void Neuron::gradientDescent(std::vector<std::vector<float>> previousLayerActiva
     //bias update
     float meanError = 0;
     for(auto feedforwardError : error){
-       meanError += feedforwardError;
-   }
-     meanError  /= error.size();
-   bias -= - (Network::learningRate) * meanError;
+        meanError += feedforwardError;
+    }
+    meanError  /= error.size();
+    bias -= - (Network::learningRate) * meanError;
 
-   //weights update
-   for(unsigned weightNumber = 0 ; weightNumber< weights.size()-1; ++weightNumber){
-       float weightChangesSummed = 0;
-       for(unsigned feedforwarNumber =0; feedforwarNumber< previousLayerActivations[weightNumber].size()-1; ++feedforwarNumber){
-           weightChangesSummed += previousLayerActivations[weightNumber][feedforwarNumber] * error[feedforwarNumber];
-       }
+    //weights update
+    for(unsigned weightNumber = 0 ; weightNumber< weights.size()-1; ++weightNumber){
+        float weightChangesSummed = 0;
+        for(unsigned feedforwarNumber =0; feedforwarNumber< previousLayerActivations[weightNumber].size()-1; ++feedforwarNumber){
+            weightChangesSummed += previousLayerActivations[weightNumber][feedforwarNumber] * error[feedforwarNumber];
+        }
 
-       weights[weightNumber]  += - (Network::learningRate/error.size()) *  (weightChangesSummed/error.size())   ;
-   }
+        weights[weightNumber]  += - (Network::learningRate/error.size()) *  (weightChangesSummed/error.size())   ;
+    }
 }
 
 
@@ -139,5 +141,9 @@ std::vector<float> Neuron::getWeights() {
 
 const std::vector<float> &Neuron::getPreActivation() const {
     return preActivation;
+}
+
+void Neuron::addError(float _error) {
+    error.emplace_back(_error);
 }
 

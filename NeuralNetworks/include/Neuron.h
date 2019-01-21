@@ -36,8 +36,8 @@ private:
         const float & getActivation(const unsigned short adress );
         std::vector<float> getError();
         std::vector<float> getWeights();
-        float getMyError();
 
+        void addError(float error);
         void gradientDescent(std::vector<std::vector<float>> previousLayerActivations);
 
         void resetActivations();

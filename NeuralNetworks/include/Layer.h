@@ -10,6 +10,9 @@ class Layer
 private:
     std::vector<Neuron *> neurons;
 public:
+    const std::vector<Neuron *> &getNeurons() const;
+
+public:
 
     Layer(const unsigned short & nbNeurons,const unsigned short & nbNeuronsInPreviousLayer);
     virtual ~Layer();
@@ -23,6 +26,7 @@ public:
     std::vector<float> getWeightFromVector();
     std::vector<std::vector<float>> getNeuronErrors();
     void layerGradientDescent(std::vector<std::vector<float>> PreviousLayerActivation);
+
 
     std::vector<std::vector<float>> getNeuronWeight();
     friend std::ostream& operator<< (std::ostream& stream, Layer & layer);

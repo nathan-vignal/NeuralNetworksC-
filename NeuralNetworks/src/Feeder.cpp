@@ -17,7 +17,7 @@ void Feeder::initEntrieAndExit() {
     std::pair<std::vector<float>, std::vector<float>> pair;
 
     for (unsigned i = 0; i < 100; ++i) {
-        pair.first = {float(random() % 2), float(random() % 2), float(random() % 2), float(random() % 2)};
+        pair.first = {float(rand() % 2), float(rand() % 2), float(rand() % 2), float(rand() % 2)};
         pair.second = {1, 1, 1, 1};
 
         entrieExit.emplace_back(pair);
