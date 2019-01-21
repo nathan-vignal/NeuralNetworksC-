@@ -75,7 +75,45 @@ void Layer::processLastLayerError(std::vector<std::vector<float>> output){
 
 }
 
-void Layer::processLayerError() {
+void Layer::processLayerError(Layer nextlayer ) {
+    float err;
+
+    // Tous les neurones du layer
+    for (unsigned i(0); this->neurons.size() -1; ++i) {
+
+        // Tous les neurones du layer l+1
+        for (unsigned j(0); nextlayer.neurons.size() -1; ++j) {
+
+            //     Toutes les erreurs k du vecteur d'erreur du neurone i du layer l
+            for (auto k : neurons[i]->getError()) {
+
+                // Toutes les erreurs l du vecteur d'erreur du neurone j du layer l+1
+                for (auto l : nextlayer.neurons[j]->getError()) {
+
+                    for (auto w : nextlayer.neurons[j]->getWeights()) {
+
+                        // vecteur erreur         ->poids w du neurone J du layer l+1 * erreur w du neurone J du layer l+1
+                        //                                       w1 * E1
+                        err = nextlayer.neurons[j]->getWeights()[w] * nextlayer.neurons[j]->getError()[w];
+
+                        // on somme tout w1 * E1 + .. + wn * En
+                        err =+ err;
+                    }
+
+                }
+            }
+        }
+        // on multiple donc la somme par sigmoidPrime
+        neurons[i]->getError().emplace_back(err * Neuron::sigmoidPrime((neurons[i]->getActivation(i))));
+    }
+
+
+
+
+
+
+
+
 
 
 }

@@ -19,7 +19,7 @@ public:
     void resetActivations();
     void processLastLayerError(std::vector<std::vector<float>> output);
 
-    void processLayerError();
+    void processLayerError(Layer layer);
 
     friend std::ostream& operator<< (std::ostream& stream, Layer & layer);
 

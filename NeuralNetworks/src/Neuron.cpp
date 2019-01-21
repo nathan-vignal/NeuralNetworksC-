@@ -82,6 +82,10 @@ const float& Neuron::getActivation(const unsigned short adress) {
     return activations[adress];
 }
 
+std::vector<float> Neuron::getError() {
+    return error;
+}
+
 std::ostream &operator<<(std::ostream &os, const Neuron &neuron){
     for (auto activation : neuron.activations) // mettre activations
         os <<  activation ;
@@ -100,5 +104,13 @@ void Neuron::processLastNeuronError(std::vector<float> activationBP) {
     for ( unsigned i = 0; i < activationBP.size() - 1; ++i ) {
         this->error.emplace_back(this->getActivation(i) - activationBP[i]);
     }
+}
+
+float Neuron::getMyError() {
+    return my_error;
+}
+
+std::vector<float> Neuron::getWeights() {
+    return weights;
 }
 
