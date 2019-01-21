@@ -20,6 +20,8 @@ public:
     void processLastLayerError(std::vector<std::vector<float>> output);
 
     void processLayerError();
+    std::vector<std::vector<float>> getNeuronErrors();
+    void layerGradientDescent(Layer *nextLayer);
 
     friend std::ostream& operator<< (std::ostream& stream, Layer & layer);
 

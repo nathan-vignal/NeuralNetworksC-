@@ -108,14 +108,14 @@ void Layer::processLayerError(Layer nextlayer ) {
     }
 
 
-
-
-
-
-
-
-
-
 }
 
 
+std::vector<std::vector<float>> Layer::getNeuronErrors(){
+    std::vector<std::vector<float>> neuronsError;
+    for(auto neuron : neurons){
+        neuronsError.emplace_back(neuron->getError());
+    }
+    return neuronsError;
+
+}
