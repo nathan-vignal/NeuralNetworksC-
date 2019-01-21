@@ -75,40 +75,46 @@ void Layer::processLastLayerError(std::vector<std::vector<float>> output){
 
 }
 
-void Layer::processLayerError(Layer nextlayer ) {
-    float err;
+void Layer::processLayerError(Layer nextLayer) {
 
-    // Tous les neurones du layer
-    for (unsigned i(0); this->neurons.size() -1; ++i) {
+    float error;
 
-        // Tous les neurones du layer l+1
-        for (unsigned j(0); nextlayer.neurons.size() -1; ++j) {
-
-            //     Toutes les erreurs k du vecteur d'erreur du neurone i du layer l
-            for (auto k : neurons[i]->getError()) {
-
-                // Toutes les erreurs l du vecteur d'erreur du neurone j du layer l+1
-                for (auto l : nextlayer.neurons[j]->getError()) {
-
-                    for (auto w : nextlayer.neurons[j]->getWeights()) {
-
-                        // vecteur erreur         ->poids w du neurone J du layer l+1 * erreur w du neurone J du layer l+1
-                        //                                       w1 * E1
-                        err = nextlayer.neurons[j]->getWeights()[w] * nextlayer.neurons[j]->getError()[w];
-
-                        // on somme tout w1 * E1 + .. + wn * En
-                        err =+ err;
-                    }
-
-                }
-            }
+    for (unsigned i(0); i < getErrorFromVector().size() -1; ++i) {
+        for (unsigned j(0); j < nextLayer.getNeuronWeight().size() -1; ++j) {
+            error += nextLayer.getNeuronWeight()[j] * nextLayer.getErrorFromVector()[j];
         }
-        // on multiple donc la somme par sigmoidPrime
-        neurons[i]->getError().emplace_back(err * Neuron::sigmoidPrime((neurons[i]->getActivation(i))));
+        getErrorFromVector()[i] = error * Neuron::sigmoidPrime(neurons[i]->getPreActivation()[i]);
     }
 
-
 }
+
+std::vector<float> Layer::getErrorFromVector() {
+    std::vector<float> errorFromVector;
+    for (auto e : this->getNeuronErrors()) {
+        for (unsigned i(0); i < e.size() - 1; ++i) {
+            errorFromVector.emplace_back(e[i]);
+        }
+    }
+    return errorFromVector;
+}
+
+std::vector<float> Layer::getNeuronWeight() {
+    std::vector<float> neuronsWeight;
+    for (auto neuron : neurons) {
+        neuronsWeight.emplace_back(neuron->getPreActivation());
+    }
+    return neuronsWeight;
+}
+
+
+
+
+
+
+
+
+
+
 void Layer::layerGradientDescent(std::vector<std::vector<float>> previousLayerActivation) {
     for(auto neuron : neurons){
         neuron->gradientDescent(previousLayerActivation);

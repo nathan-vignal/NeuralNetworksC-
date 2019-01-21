@@ -135,3 +135,7 @@ std::vector<float> Neuron::getWeights() {
     return weights;
 }
 
+const std::vector<float> &Neuron::getPreActivation() const {
+    return preActivation;
+}
+

@@ -15,7 +15,11 @@ public:
 
         std::vector<float> activations;
         std::vector<float> preActivation;
-        std::vector<float> weights;
+public:
+    const std::vector<float> &getPreActivation() const;
+
+private:
+    std::vector<float> weights;
         std::vector<float> error;
         float my_error;
         float bias;
