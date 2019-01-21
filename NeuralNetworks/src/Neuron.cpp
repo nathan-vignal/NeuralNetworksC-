@@ -1,6 +1,7 @@
 #include "Neuron.h"
 #include <random>
 #include <iostream>
+#include <Network.h>
 //int Exemple::compteur = 0;
 
 unsigned short Neuron::maxWeight = 5;
@@ -109,13 +110,24 @@ void Neuron::processLastNeuronError(std::vector<float> activationBP) {
  * process the changes on the weights and biaises
  * - learningRate * (1/numberOfFeedForwards) * (partials derivatives of the costs with respect to this neuron summed up)
  */
-void Neuron::gradientDescent() {
+void Neuron::gradientDescent(std::vector<std::vector<float>> previousLayerActivations) {
+    //bias update
     float meanError = 0;
     for(auto feedforwardError : error){
        meanError += feedforwardError;
    }
      meanError  /= error.size();
    bias -= - (Network::learningRate) * meanError;
+
+   //weights update
+   for(unsigned weightNumber = 0 ; weightNumber< weights.size()-1; ++weightNumber){
+       float weightChangesSummed = 0;
+       for(unsigned feedforwarNumber =0; feedforwarNumber< previousLayerActivations[weightNumber].size()-1; ++feedforwarNumber){
+           weightChangesSummed += previousLayerActivations[weightNumber][feedforwarNumber] * error[feedforwarNumber];
+       }
+
+       weights[weightNumber]  += - (Network::learningRate/error.size()) *  (weightChangesSummed/error.size())   ;
+   }
 }
 
 

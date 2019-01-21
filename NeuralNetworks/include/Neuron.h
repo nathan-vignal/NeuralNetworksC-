@@ -35,7 +35,7 @@ public:
         std::vector<float> getWeights();
         float getMyError();
 
-        void gradientDescent();
+        void gradientDescent(std::vector<std::vector<float>> previousLayerActivations);
 
         void resetActivations();
         void processLastNeuronError(std::vector<float> activationBP);

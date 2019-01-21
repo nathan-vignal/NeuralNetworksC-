@@ -109,6 +109,13 @@ void Layer::processLayerError(Layer nextlayer ) {
 
 
 }
+void Layer::layerGradientDescent(std::vector<std::vector<float>> previousLayerActivation) {
+    for(auto neuron : neurons){
+        neuron->gradientDescent(previousLayerActivation);
+    }
+
+
+}
 
 
 std::vector<std::vector<float>> Layer::getNeuronErrors(){

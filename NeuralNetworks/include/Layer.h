@@ -21,7 +21,7 @@ public:
 
     void processLayerError();
     std::vector<std::vector<float>> getNeuronErrors();
-    void layerGradientDescent(Layer *nextLayer);
+    void layerGradientDescent(std::vector<std::vector<float>> PreviousLayerActivation);
 
     friend std::ostream& operator<< (std::ostream& stream, Layer & layer);
 

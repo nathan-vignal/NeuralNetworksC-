@@ -129,6 +129,9 @@ void Network::backPropagation(){
 }
 
 void Network::gradientDescent() {
+    for(unsigned layerNumber =layers.size()-2; layerNumber>0;--layerNumber  ){
+        layers[layerNumber]->layerGradientDescent(layers[layerNumber]->getMyactivations());
+    }
 
 }
 
