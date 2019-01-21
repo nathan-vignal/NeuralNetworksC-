@@ -88,15 +88,18 @@ void Layer::processLayerError(Layer nextLayer) {
         float sum = 0;
         for(unsigned feedforwardNumber=0 ; feedforwardNumber<nextLayer.getNeuronErrors()[0].size(); ++feedforwardNumber){ //for each of the feeforwards
             for(auto nextLayerNeuron : nextLayer.getNeurons()){ // for each of the nextLayer neurons
-                std::cout << "taille "<< nextLayer.getNeuronErrors()[0].size() << std::endl;
-               std::cout << nextLayerNeuron->getError()[feedforwardNumber];
+               std::cout <<"layer error" << nextLayerNeuron->getError()[feedforwardNumber]<< std::endl;
+               /* if(std::isnan(nextLayerNeuron->getError()[feedforwardNumber])){
+                    std::cout << "nextLayerNe"
+                }*/
                  sum +=  nextLayerNeuron->getError()[feedforwardNumber] * nextLayerNeuron->getWeights()[feedforwardNumber];
 
                 //sum += weights(to the next neuron)* error(in the linked neuron)
             }
-            sum = 0;
+            std::cout << sum << std::endl;
             //sum /= nextLayer.getNeurons().size();
-            neuron->addError(Neuron::sigmoidPrime( neuron->getPreActivation()[feedforwardNumber])* sum);
+            neuron->addError(roundf(Neuron::sigmoidPrime( neuron->getPreActivation()[feedforwardNumber])* sum));
+            sum = 0;
 
 
         }

@@ -14,9 +14,18 @@ Network::Network(const unsigned short &nbLayer, const unsigned short &nbNeuron,
     for(unsigned i = 1 ; i<=numberOfEpochs; ++i){
         entries.emplace_back( std::vector<std::vector<float> > (&_entries[(_entries.size()/numberOfEpochs)*(i-1)],&_entries[(_entries.size()/numberOfEpochs)*(i)]));
     }
+    /*
+    for(auto & first : entries){
+        cout << "\n";
+        for(auto & second : first){
+            cout << "[";
+            for( auto & data : second){
+                cout << data <<" ";
+            }
+            cout << "]";
+        }
+    }*/
 
-    //sub(&data[100000],&data[101000]);
-    //Layer(number of neurons, number of Neurons In the Previous Layer );
 
     Layer *  firstLayer = new Layer(nbNeuron,(unsigned short)entries[0][0].size());
     layers.emplace_back(firstLayer );  //emplace_back plus opti que push_back
@@ -42,14 +51,12 @@ void Network::feedforward(const unsigned short numberOfTheEpoch) {
     }
 }
 
-std::vector<float> Network::testFeedforward(std::vector<float> entries) {
+std::vector<float> Network::testFeedforward(const std::vector<float> & entries) {
     layers[0]->processMyNeuronsActivations({entries});
     for(unsigned i=1; i < layers.size(); ++i){
         layers[i]->processMyNeuronsActivations(layers[i-1]->getMyactivations());
     }
-    //return layers[layers.size()-1]->getMyactivations()[0];
-    std::vector<float> azer= {0,1,0,2};
-    return(azer);
+    return layers[layers.size()-1]->getMyactivations()[0];
 }
 
 
@@ -98,15 +105,6 @@ void Network::vectorResizing(std::vector<std::vector<float>> vector, unsigned ro
     }
 }
 
-std::vector<std::vector<float>> functionSquare(std::vector<std::vector<float>> entree) {
-    std::vector<std::vector<float>> attendu = entree;
-    for (unsigned i(0); i < attendu.size(); ++i) {
-        for(unsigned j(0); j < attendu[i].size(); ++j) {
-            attendu[i][j] = attendu[i][j] * attendu[i][j];
-        }
-    }
-    return attendu;
-}
 
 void Network::resetActivations() {
     for(Layer * layer : layers){
@@ -119,8 +117,8 @@ void Network::main() {
         feedforward(i);
 
         processCost();
-        backPropagation();/*
-        gradientDescent();*/
+        backPropagation();
+        gradientDescent();
         resetActivations();
     }
 }

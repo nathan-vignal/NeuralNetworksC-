@@ -18,7 +18,7 @@ void Feeder::initEntrieAndExit() {
 
     for (unsigned i = 0; i < 100; ++i) {
         pair.first = {float(rand() % 2), float(rand() % 2), float(rand() % 2), float(rand() % 2)};
-        pair.second = {1, 1, 1, 1};
+        pair.second = {1, 1, 0, 1};
 
         entrieExit.emplace_back(pair);
     }

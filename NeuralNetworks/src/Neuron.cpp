@@ -35,7 +35,7 @@ float Neuron::sigmoid(float x) {
 }
 
 float Neuron::sigmoidPrime(float x) {
-    return( sigmoid(x)*(1-sigmoid(x)));
+    return( roundf(sigmoid(x)*(1-sigmoid(x))));
 }
 
 
@@ -44,6 +44,7 @@ void Neuron::processActivations(const std::vector<std::vector<float>> &previousL
 
     for(const std::vector<float> & layerActivation : previousLayerActivations){
         float sum=0;
+
         for(auto preActivation : hadamardProduct(layerActivation,weights))
             sum += preActivation;
         sum += bias;
@@ -88,7 +89,8 @@ std::vector<float> Neuron::getError() {
 }
 
 std::ostream &operator<<(std::ostream &os, const Neuron &neuron) {
-    for (auto activation : neuron.error) {// mettre activations
+    os << "neuron :";
+    for (auto activation : neuron.weights) {// mettre activations
 
         os << activation;
         os << "  ";

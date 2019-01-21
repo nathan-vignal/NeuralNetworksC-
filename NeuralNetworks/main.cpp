@@ -22,11 +22,16 @@ int main()
     vector<vector<float>> output = {{0,1,1,0},{1,0,1,0},{1,1,1,0},{0,0,1,0}};*/
                     //Network(nombre de layer, nombre de neuron par layer, input, output)
 
-    Network network((unsigned short)5,(unsigned short)5,input,output,2);
+    Network network((unsigned short)4,(unsigned short)3,input,output,4);
+    cout << network ;
+
     network.main();
-    for(auto  truc : network.testFeedforward({1,0,1,0})){
-        cout << truc << "   slt   " ;
+
+    for(auto truc :network.testFeedforward({1,1,1,1}) ){
+        cout<< "ne va pas afficher un truc grand "<< truc << '\n' ;
     }
+
+
 
 
     /*cout << network;
