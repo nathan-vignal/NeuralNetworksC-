@@ -37,7 +37,7 @@ void Layer::processMyNeuronsActivations(const std::vector<std::vector<float>> &p
 
 
 std::ostream& operator<<(std::ostream &stream, Layer &layer) {
-
+    stream << "next Layer \n";
     for (Neuron *neuron : layer.neurons) {
         stream <<  * neuron;
     }
@@ -78,26 +78,27 @@ void Layer::processLastLayerError(std::vector<std::vector<float>> output){
 }
 
 void Layer::processLayerError(Layer nextLayer) {
-    /* use to debug
+    //use to debug
+    std::cout << " next LAYERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRr" ;
     for(auto neuron : nextLayer.getNeurons()){
         std::cout << * neuron;
         std::cout << '\n' <<std::endl;
-    }*/
+    }
 
     for(auto neuron : neurons){ // for each of my neurons
+        std::cout <<'\n'<< "nextNeuron" <<std::endl;
         float sum = 0;
         for(unsigned feedforwardNumber=0 ; feedforwardNumber<nextLayer.getNeuronErrors()[0].size(); ++feedforwardNumber){ //for each of the feeforwards
+
             for(auto nextLayerNeuron : nextLayer.getNeurons()){ // for each of the nextLayer neurons
-               /* if(std::isnan(nextLayerNeuron->getError()[feedforwardNumber])){
-                    std::cout << "nextLayerNe"
-                }*/
+                //std::cout << "ha" << nextLayerNeuron->getError()[feedforwardNumber] ;
                  sum +=  nextLayerNeuron->getError()[feedforwardNumber] * nextLayerNeuron->getWeights()[feedforwardNumber];
 
                 //sum += weights(to the next neuron)* error(in the linked neuron)
             }
             //sum /= nextLayer.getNeurons().size();
-            std::cout << "\nerror in this neuron for this feedforward : " <<sum;
-            neuron->addError(roundf(Neuron::sigmoidPrime( neuron->getPreActivation()[feedforwardNumber])* sum));
+            std::cout << "\nerror in this neuron for this feedforward : " <<Neuron::sigmoidPrime( neuron->getPreActivation()[feedforwardNumber])* sum;
+            neuron->addError(Neuron::sigmoidPrime( neuron->getPreActivation()[feedforwardNumber])* sum);
             sum = 0;
 
 

@@ -35,7 +35,7 @@ float Neuron::sigmoid(float x) {
 }
 
 float Neuron::sigmoidPrime(float x) {
-    return( roundf(sigmoid(x)*(1-sigmoid(x))));
+    return( sigmoid(x)*(1-sigmoid(x)));
 }
 
 
@@ -89,12 +89,12 @@ std::vector<float> Neuron::getError() {
 }
 
 std::ostream &operator<<(std::ostream &os, const Neuron &neuron) {
-    os << "neuron :";
+    os << "neuron :"<<neuron.bias ;/*
     for (auto activation : neuron.weights) {// mettre activations
 
         os << activation;
         os << "  ";
-    }
+    }*/
 
     return os;
 
@@ -117,19 +117,28 @@ void Neuron::processLastNeuronError(std::vector<float> activationBP) {
  * - learningRate * (1/numberOfFeedForwards) * (partials derivatives of the costs with respect to this neuron summed up)
  */
 void Neuron::gradientDescent(std::vector<std::vector<float>> previousLayerActivations) {
+    //std::cout << *this;
+
+
     //bias update
     float meanError = 0;
     for(auto feedforwardError : error){
         meanError += feedforwardError;
     }
     meanError  /= error.size();
-    bias -= - (Network::learningRate) * meanError;
-
+    bias += - (Network::learningRate) * meanError;
+    if(weights.size() !=previousLayerActivations[0].size() ){
+        std::cout <<"number of weights in this layer"<< weights.size();
+        std::cout <<"number of activations in previous layer"<< previousLayerActivations[0].size();}
     //weights update
+    //  there as much weights in the current neuron as the number of neurons in the previous layer
+
     for(unsigned weightNumber = 0 ; weightNumber< weights.size()-1; ++weightNumber){
+
         float weightChangesSummed = 0;
-        for(unsigned feedforwarNumber =0; feedforwarNumber< previousLayerActivations[weightNumber].size()-1; ++feedforwarNumber){
-            weightChangesSummed += previousLayerActivations[weightNumber][feedforwarNumber] * error[feedforwarNumber];
+        for(unsigned feedforwarNumber =0; feedforwarNumber< previousLayerActivations.size()-1; ++feedforwarNumber){
+
+            //weightChangesSummed += previousLayerActivations[feedforwarNumber][weightNumber] *error[feedforwarNumber];
         }
 
         weights[weightNumber]  += - (Network::learningRate/error.size()) *  (weightChangesSummed/error.size())   ;

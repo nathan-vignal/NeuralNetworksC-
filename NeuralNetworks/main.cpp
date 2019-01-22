@@ -22,23 +22,19 @@ int main()
     vector<vector<float>> output = {{0,1,1,0},{1,0,1,0},{1,1,1,0},{0,0,1,0}};*/
                     //Network(nombre de layer, nombre de neuron par layer, input, output)
 
-    Network network((unsigned short)4,(unsigned short)3,input,output,4);
-    cout << network ;
+    Network network((unsigned short)3,(unsigned short)5,input,output,4);
+    //network.feedforward(0);
+    //network.backPropagation(0);
+
 
     network.main();
-
-    for(auto truc :network.testFeedforward({0,0,0,0}) ){
-        cout<< "ne va pas afficher un truc grand "<< truc << '\n' ;
+    std::cout << network;
+    for(auto neuronResult :network.testFeedforward({1,1,1,1}) ){
+        for( auto data : neuronResult)
+        cout<< "\nva soon afficher un truc grand "<< data  ;
     }
 
 
-
-
-    /*cout << network;
-    for(auto neuronCost : network.getCost())
-        cout << neuronCost<< ' '; */
-
-    //network.getLayers()[network.getLayers().size()-1].get
 
 
     return 0;

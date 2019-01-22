@@ -8,13 +8,17 @@ Network::Network(const unsigned short &nbLayer, const unsigned short &nbNeuron,
                  const std::vector<std::vector<float> > &_entries, const std::vector<std::vector<float> > &_output
         , const unsigned short & _numberOfEpochs) {
 
-    output = _output;
+    //output = _output;
     numberOfEpochs = _numberOfEpochs;
     //distribution of the entry data on epochs
     for(unsigned i = 1 ; i<=numberOfEpochs; ++i){
         entries.emplace_back( std::vector<std::vector<float> > (&_entries[(_entries.size()/numberOfEpochs)*(i-1)],&_entries[(_entries.size()/numberOfEpochs)*(i)]));
     }
-    /*
+
+    for(unsigned i = 1 ; i<=numberOfEpochs; ++i){
+        output.emplace_back( std::vector<std::vector<float> > (&_output[(_output.size()/numberOfEpochs)*(i-1)],&_output[(_output.size()/numberOfEpochs)*(i)]));
+    }
+
     for(auto & first : entries){
         cout << "\n";
         for(auto & second : first){
@@ -24,7 +28,7 @@ Network::Network(const unsigned short &nbLayer, const unsigned short &nbNeuron,
             }
             cout << "]";
         }
-    }*/
+    }
 
 
     Layer *  firstLayer = new Layer(nbNeuron,(unsigned short)entries[0][0].size());
@@ -34,7 +38,7 @@ Network::Network(const unsigned short &nbLayer, const unsigned short &nbNeuron,
         auto * layer = new Layer(nbNeuron,nbNeuron);
         layers.emplace_back( layer );  //emplace_back plus opti que push_back
     }
-    Layer * lastLayer = new Layer((unsigned short)output[0].size(),nbNeuron);
+    Layer * lastLayer = new Layer((unsigned short)output[0][0].size(),nbNeuron);
     layers.emplace_back(lastLayer );  //emplace_back plus opti que push_back
 }
 
@@ -46,17 +50,19 @@ Network::~Network() {
 
 void Network::feedforward(const unsigned short numberOfTheEpoch) {
     layers[0]->processMyNeuronsActivations(entries[numberOfTheEpoch]);
+    std::cout << "numberOfTheEpoch " << numberOfTheEpoch <<endl;
     for(unsigned i=1; i < layers.size(); ++i){
         layers[i]->processMyNeuronsActivations(layers[i-1]->getMyactivations());
     }
 }
 
-std::vector<float> Network::testFeedforward(const std::vector<float> & entries) {
+vector<vector<float>> Network::testFeedforward(const std::vector<float> &entries) {
     layers[0]->processMyNeuronsActivations({entries});
     for(unsigned i=1; i < layers.size(); ++i){
         layers[i]->processMyNeuronsActivations(layers[i-1]->getMyactivations());
     }
-    return layers[layers.size()-1]->getMyactivations()[0];
+    std::cout << * layers[layers.size()-1];
+    return layers[layers.size()-1]->getMyactivations();
 }
 
 
@@ -73,9 +79,10 @@ std::ostream& operator<< (std::ostream& stream, Network & network) {
 const vector<Layer *> &Network::getLayers() const {
     return layers;
 }
+
 /**
  * process network global cost for each feedforward
- */
+ *//*
 void Network::processCost() {
     cost.clear();
     std::vector<std::vector<float>> lastLayerActivations = getLayers()[getLayers().size()-1]->getMyactivations();
@@ -93,7 +100,7 @@ void Network::processCost() {
     }
 
 }
-
+*/
 const vector<float> &Network::getCost() const {
     return cost;
 }
@@ -116,17 +123,18 @@ void Network::main() {
     for(unsigned short i=0 ; i<numberOfEpochs; ++i){
         feedforward(i);
 
-        processCost();
-        backPropagation();
-        gradientDescent();
+        //processCost(); inutile
+        backPropagation(i);
+        gradientDescent(0);
+
         resetActivations();
     }
 }
 
-void Network::backPropagation(){
+void Network::backPropagation(unsigned short numberOfTheEpoch) {
     //process the partial derivative with respect to z for each layer
     cout << "batch backpropagation"<<endl;
-    layers[layers.size()-1]->processLastLayerError(output); //process the partial derivative of c with respect to z for the last layer
+    layers[layers.size()-1]->processLastLayerError(output[numberOfTheEpoch]); //process the partial derivative of c with respect to z for the last layer
 
     for(unsigned i = (unsigned)layers.size()-2 ; i > 0; --i){ //use the partial derivative c/z of the n+1 layer to process it for n
         layers[i]->processLayerError(*layers[i+1]);
@@ -134,10 +142,11 @@ void Network::backPropagation(){
     }
 }
 
-void Network::gradientDescent() {
+void Network::gradientDescent(unsigned short batchNumber) {
     for(unsigned layerNumber =layers.size()-1; layerNumber>0;--layerNumber  ){
-        layers[layerNumber]->layerGradientDescent(layers[layerNumber]->getMyactivations());
+        layers[layerNumber]->layerGradientDescent(layers[layerNumber-1]->getMyactivations());
     }
+    layers[0]->layerGradientDescent(entries[batchNumber]);
 
 }
 
