@@ -66,7 +66,6 @@ vector<vector<float>> Network::testFeedforward(const std::vector<float> &entries
     for(unsigned i=1; i < layers.size(); ++i){
         layers[i]->processMyNeuronsActivations(layers[i-1]->getMyactivations());
     }
-    std::cout << *this;
     //std::cout << * layers[layers.size()-1];
     return layers[layers.size()-1]->getMyactivations();
 }
@@ -146,7 +145,6 @@ void Network::backPropagation(unsigned short numberOfTheEpoch) {
     std::cout << * layers[layers.size()-1];
     for(unsigned i = (unsigned)layers.size()-2 ; i >= 0 && i<9999; --i){ //use the partial derivative c/z of the n+1 layer to process it for n
                 //condition i<99999 car 0-1 = 42000000 dans le référentiel des unsigned
-        std::cout << "\ncame HERE"<<i<<std::endl;
         layers[i]->processLayerError(*layers[i+1]);
 
     }

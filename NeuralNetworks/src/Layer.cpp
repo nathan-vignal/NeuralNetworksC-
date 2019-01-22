@@ -93,7 +93,6 @@ void Layer::processLayerError(Layer nextLayer) {
         for(unsigned feedforwardNumber=0 ; feedforwardNumber < nextLayer.getNeuronErrors().size()-1; ++feedforwardNumber){ //for each of the feeforwards
 
             for(auto nextLayerNeuron : nextLayer.getNeurons()){ // for each of the nextLayer neurons
-                std::cout << *nextLayerNeuron;
                 //std::cout << "ha" << nextLayerNeuron->getError()[feedforwardNumber] ;
                 sum +=  nextLayerNeuron->getError()[feedforwardNumber] * nextLayerNeuron->getWeights()[feedforwardNumber];
 
