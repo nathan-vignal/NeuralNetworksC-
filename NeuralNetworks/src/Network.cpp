@@ -18,7 +18,7 @@ Network::Network(const unsigned short &nbLayer, const unsigned short &nbNeuron,
     for(unsigned i = 1 ; i<=numberOfEpochs; ++i){
         output.emplace_back( std::vector<std::vector<float> > (&_output[(_output.size()/numberOfEpochs)*(i-1)],&_output[(_output.size()/numberOfEpochs)*(i)]));
     }
-
+    /*
     for(auto & first : entries){
         cout << "\n";
         for(auto & second : first){
@@ -28,7 +28,7 @@ Network::Network(const unsigned short &nbLayer, const unsigned short &nbNeuron,
             }
             cout << "]";
         }
-    }
+    }*/
 
 
     Layer *  firstLayer = new Layer(nbNeuron,(unsigned short)entries[0][0].size());
@@ -50,7 +50,10 @@ Network::~Network() {
 
 void Network::feedforward(const unsigned short numberOfTheEpoch) {
     layers[0]->processMyNeuronsActivations(entries[numberOfTheEpoch]);
-    std::cout << "numberOfTheEpoch " << numberOfTheEpoch <<endl;
+    if(numberOfTheEpoch%100 == 0){
+        std::cout << "numberOfTheEpoch " << numberOfTheEpoch <<endl;
+    }
+
     for(unsigned i=1; i < layers.size(); ++i){
         layers[i]->processMyNeuronsActivations(layers[i-1]->getMyactivations());
     }
@@ -67,7 +70,9 @@ vector<vector<float>> Network::testFeedforward(const std::vector<float> &entries
         layers[i]->processMyNeuronsActivations(layers[i-1]->getMyactivations());
     }
     //std::cout << * layers[layers.size()-1];
-    return layers[layers.size()-1]->getMyactivations();
+    vector<vector<float>> result = layers[layers.size()-1]->getMyactivations();
+    resetActivations();
+    return result;
 }
 
 
@@ -129,8 +134,6 @@ void Network::main() {
         feedforward(i);
         //processCost(); inutile
         backPropagation(i);
-        std::cout << *this;
-        std::cout<< '\n';
         gradientDescent(i);
 
         resetActivations();
@@ -139,10 +142,10 @@ void Network::main() {
 
 void Network::backPropagation(unsigned short numberOfTheEpoch) {
     //process the partial derivative with respect to z for each layer
-    cout << "batch backpropagation"<<endl;
+    //cout << "batch backpropagation"<<endl;
 
     layers[layers.size()-1]->processLastLayerError(output[numberOfTheEpoch]); //process the partial derivative of c with respect to z for the last layer
-    std::cout << * layers[layers.size()-1];
+    //std::cout << * layers[layers.size()-1];
     for(unsigned i = (unsigned)layers.size()-2 ; i >= 0 && i<9999; --i){ //use the partial derivative c/z of the n+1 layer to process it for n
                 //condition i<99999 car 0-1 = 42000000 dans le référentiel des unsigned
         layers[i]->processLayerError(*layers[i+1]);
@@ -154,12 +157,12 @@ void Network::gradientDescent(unsigned short batchNumber) {
     for(unsigned layerNumber =layers.size()-1; layerNumber>0;--layerNumber  ){
         layers[layerNumber]->layerGradientDescent(layers[layerNumber-1]->getMyactivations());
     }
-    for (auto t : entries[batchNumber]){
+   /* for (auto t : entries[batchNumber]){
         std::cout << "lastLayer[";
         for( auto y : t)
         std::cout << y;
         std::cout << "] \n";
-    }
+    }*/
     layers[0]->layerGradientDescent(entries[batchNumber]);
 
 }

@@ -22,18 +22,48 @@ int main()
     vector<vector<float>> output = {{0,1,1,0},{1,0,1,0},{1,1,1,0},{0,0,1,0}};*/
                     //Network(nombre de layer, nombre de neuron par layer, input, output)
 
-    Network network((unsigned short)2,(unsigned short)1,input,output,1000);
+    Network network((unsigned short)3,(unsigned short)4,input,output,1000);
     //network.feedforward(0);
     //network.backPropagation(0);
 
 
     network.main();
+    while(1){
+        float first = 0;
+        float second = 0;
+        float third = 0;
+        float four = 0;
 
-    for(auto neuronResult :network.testFeedforward({1,1,1,1}) ){
-        for( auto data : neuronResult)
-        cout<< "\nva soon afficher un truc grand "<< data  ;
+
+
+        cout << "veuillez entrer un vecteur ";
+        cin >> first;
+        cin >> second;
+        cin >> third;
+        cin >> four;
+        for(auto neuronResult :network.testFeedforward({first,second,third,four}) ){
+            cout<< '\n';
+            for( auto data : neuronResult)
+                cout<< " "<< data  ;
+        }
+
+
+
     }
+    cout<< "1110";
 
+    cout<< "\n\n1000";
+    for(auto neuronResult :network.testFeedforward({1,0,0,0}) ){
+        cout<< '\n';
+        for( auto data : neuronResult)
+            cout<< " "<< data  ;
+    }
+    cout<< "0110";
+    for(auto neuronResult :network.testFeedforward({0,1,1,0}) ){
+        cout<< '\n';
+        for( auto data : neuronResult)
+            cout<< " "<< data  ;
+    }
 
 
 

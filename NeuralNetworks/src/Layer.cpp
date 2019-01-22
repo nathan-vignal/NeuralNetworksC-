@@ -82,11 +82,11 @@ void Layer::processLastLayerError(std::vector<std::vector<float>> output){
  */
 void Layer::processLayerError(Layer nextLayer) {
     //use to debug
-    std::cout << " PROCESS layer error" <<std::endl;
+    /*std::cout << " PROCESS layer error" <<std::endl;
     for(auto neuron : nextLayer.getNeurons()){
         std::cout << * neuron;
         std::cout << '\n' <<std::endl;
-    }
+    }*/
 
     for(auto neuron : neurons){ // for each of my neurons
         float sum = 0;
@@ -119,7 +119,7 @@ void Layer::processLayerError(Layer nextLayer) {
 
 void Layer::layerGradientDescent(std::vector<std::vector<float>> previousLayerActivation) {
     for(auto neuron : neurons){
-        std::cout << *neuron;
+        //std::cout << *neuron;
         neuron->gradientDescent(previousLayerActivation);
     }
 

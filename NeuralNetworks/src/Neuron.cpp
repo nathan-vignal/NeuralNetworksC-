@@ -94,7 +94,7 @@ std::vector<float> Neuron::getError() {
 
 std::ostream &operator<<(std::ostream &os, const Neuron &neuron) {
     os << "neuron :";// << neuron.bias;
-    for (auto activation : neuron.error) {// mettre activations
+    for (auto activation : neuron.activations) {// mettre activations
 
         os << activation;
         os << "  ";
@@ -121,7 +121,7 @@ void Neuron::processLastNeuronError(std::vector<float> activationBP) {
  * - learningRate * (1/numberOfFeedForwards) * (partials derivatives of the costs with respect to this neuron summed up)
  */
 void Neuron::gradientDescent(std::vector<std::vector<float>> previousLayerActivations) {
-    std::cout << "\n passage dans gradient descent\n";
+    //std::cout << "\n passage dans gradient descent\n";
 
     //bias update
     float meanError = 0;
@@ -138,10 +138,10 @@ void Neuron::gradientDescent(std::vector<std::vector<float>> previousLayerActiva
 
         float weightChangesSummed = 0;
         for(unsigned feedforwarNumber =0; feedforwarNumber< previousLayerActivations.size()-1; ++feedforwarNumber){
-            weightChangesSummed += error[feedforwarNumber];//previousLayerActivations[feedforwarNumber][weightNumber]
+         //   weightChangesSummed += error[feedforwarNumber] * previousLayerActivations[feedforwarNumber][weightNumber];
         }
 
-        //weights[weightNumber]  += - (Network::learningRate/error.size()) *  (weightChangesSummed/error.size())   ;
+       // weights[weightNumber]  += - (Network::learningRate/error.size()) *  (weightChangesSummed/error.size())   ;
     }
 }
 
