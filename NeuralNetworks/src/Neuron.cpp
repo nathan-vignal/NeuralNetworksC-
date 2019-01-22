@@ -44,10 +44,14 @@ void Neuron::processActivations(const std::vector<std::vector<float>> &previousL
 
     for(const std::vector<float> & layerActivation : previousLayerActivations){
         float sum=0;
-
-        for(auto preActivation : hadamardProduct(layerActivation,weights))
+        for(auto preActivation : hadamardProduct(layerActivation,weights)){
             sum += preActivation;
+
+        }
+
+
         sum += bias;
+
         preActivation.emplace_back(sum);
         activations.emplace_back(sigmoid(sum)) ;
     }
@@ -89,12 +93,12 @@ std::vector<float> Neuron::getError() {
 }
 
 std::ostream &operator<<(std::ostream &os, const Neuron &neuron) {
-    os << "neuron :"<<neuron.bias ;/*
-    for (auto activation : neuron.weights) {// mettre activations
+    os << "neuron :";// << neuron.bias;
+    for (auto activation : neuron.error) {// mettre activations
 
         os << activation;
         os << "  ";
-    }*/
+    }
 
     return os;
 
@@ -117,15 +121,16 @@ void Neuron::processLastNeuronError(std::vector<float> activationBP) {
  * - learningRate * (1/numberOfFeedForwards) * (partials derivatives of the costs with respect to this neuron summed up)
  */
 void Neuron::gradientDescent(std::vector<std::vector<float>> previousLayerActivations) {
-    //std::cout << *this;
-
+    std::cout << "\n passage dans gradient descent\n";
 
     //bias update
     float meanError = 0;
     for(auto feedforwardError : error){
+        std::cout <<"mean error"<< feedforwardError;
         meanError += feedforwardError;
     }
     meanError  /= error.size();
+
     bias += - (Network::learningRate) * meanError;
     if(weights.size() !=previousLayerActivations[0].size() ){
         std::cout <<"number of weights in this layer"<< weights.size();
@@ -137,11 +142,10 @@ void Neuron::gradientDescent(std::vector<std::vector<float>> previousLayerActiva
 
         float weightChangesSummed = 0;
         for(unsigned feedforwarNumber =0; feedforwarNumber< previousLayerActivations.size()-1; ++feedforwarNumber){
-
-            //weightChangesSummed += previousLayerActivations[feedforwarNumber][weightNumber] *error[feedforwarNumber];
+            weightChangesSummed += error[feedforwarNumber];//previousLayerActivations[feedforwarNumber][weightNumber]
         }
 
-        weights[weightNumber]  += - (Network::learningRate/error.size()) *  (weightChangesSummed/error.size())   ;
+        //weights[weightNumber]  += - (Network::learningRate/error.size()) *  (weightChangesSummed/error.size())   ;
     }
 }
 
@@ -158,3 +162,6 @@ void Neuron::addError(float _error) {
     error.emplace_back(_error);
 }
 
+void Neuron::debugSetBias(int newBias) {
+    bias = newBias;
+}

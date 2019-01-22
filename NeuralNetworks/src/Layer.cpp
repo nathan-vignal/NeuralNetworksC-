@@ -14,7 +14,7 @@ Layer::~Layer()
     //dtor
 }
 
- std::vector <std::vector<float>>  Layer::getMyactivations() {
+std::vector <std::vector<float>>  Layer::getMyactivations() {
     std::vector <std::vector<float>> result(neurons[0]->getActivations().size());
     for(unsigned short i = 0; i< neurons[0]->getActivations().size(); ++i){
         for(Neuron * neuron: neurons){
@@ -37,7 +37,6 @@ void Layer::processMyNeuronsActivations(const std::vector<std::vector<float>> &p
 
 
 std::ostream& operator<<(std::ostream &stream, Layer &layer) {
-    stream << "next Layer \n";
     for (Neuron *neuron : layer.neurons) {
         stream <<  * neuron;
     }
@@ -65,7 +64,7 @@ void Layer::processLastLayerError(std::vector<std::vector<float>> output){
     for(unsigned neuronNumber=0; neuronNumber<neurons.size();++neuronNumber){
         std::vector<float> outputForTheNeuronN;
         //modèle le vecteur des valeurs attendu pour ce neuron, à partir du vecteur output
-        for(unsigned feedForwardNumber=0; feedForwardNumber<output.size(); ++feedForwardNumber){
+        for(unsigned feedForwardNumber=0; feedForwardNumber<output[0].size()-1; ++feedForwardNumber){
             outputForTheNeuronN.emplace_back(output[feedForwardNumber][neuronNumber]);
 
         }
@@ -77,27 +76,30 @@ void Layer::processLastLayerError(std::vector<std::vector<float>> output){
 
 }
 
+/**
+ *
+ * @param nextLayer
+ */
 void Layer::processLayerError(Layer nextLayer) {
     //use to debug
-    std::cout << " next LAYERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRr" ;
+    std::cout << " PROCESS layer error" <<std::endl;
     for(auto neuron : nextLayer.getNeurons()){
         std::cout << * neuron;
         std::cout << '\n' <<std::endl;
     }
 
     for(auto neuron : neurons){ // for each of my neurons
-        std::cout <<'\n'<< "nextNeuron" <<std::endl;
         float sum = 0;
-        for(unsigned feedforwardNumber=0 ; feedforwardNumber<nextLayer.getNeuronErrors()[0].size(); ++feedforwardNumber){ //for each of the feeforwards
+        for(unsigned feedforwardNumber=0 ; feedforwardNumber < nextLayer.getNeuronErrors().size()-1; ++feedforwardNumber){ //for each of the feeforwards
 
             for(auto nextLayerNeuron : nextLayer.getNeurons()){ // for each of the nextLayer neurons
+                std::cout << *nextLayerNeuron;
                 //std::cout << "ha" << nextLayerNeuron->getError()[feedforwardNumber] ;
-                 sum +=  nextLayerNeuron->getError()[feedforwardNumber] * nextLayerNeuron->getWeights()[feedforwardNumber];
+                sum +=  nextLayerNeuron->getError()[feedforwardNumber] * nextLayerNeuron->getWeights()[feedforwardNumber];
 
                 //sum += weights(to the next neuron)* error(in the linked neuron)
             }
-            //sum /= nextLayer.getNeurons().size();
-            std::cout << "\nerror in this neuron for this feedforward : " <<Neuron::sigmoidPrime( neuron->getPreActivation()[feedforwardNumber])* sum;
+            sum /= nextLayer.getNeurons().size();
             neuron->addError(Neuron::sigmoidPrime( neuron->getPreActivation()[feedforwardNumber])* sum);
             sum = 0;
 
@@ -105,42 +107,6 @@ void Layer::processLayerError(Layer nextLayer) {
         }
 
     }
-}
-
-
-
-
-/*
-void Layer::processLayerError(Layer nextLayer) {
-
-    float error;
-
-   // for (unsigned i(0); i < getErrorFromVector().size() -1; ++i) {
-       for (unsigned j(0); j < nextLayer.getWeightFromVector().size()-1; ++j) {
-           // error += nextLayer.getWeightFromVector()[j] * nextLayer.getErrorFromVector()[j];
-        }
-        //getErrorFromVector()[i] = error * Neuron::sigmoidPrime(neurons[i]->getPreActivation()[i]);
-    //}
-
-}
-*/
-
-std::vector<float> Layer::getErrorFromVector() {
-    std::vector<float> errorFromVector;
-    for (auto e : this->getNeuronErrors()) {
-        for (unsigned i(0); i < e.size() - 1; ++i) {
-            errorFromVector.emplace_back(e[i]);
-        }
-    }
-    return errorFromVector;
-}
-
-std::vector<std::vector<float>> Layer::getNeuronWeight() {
-    std::vector<std::vector<float>> neuronsWeight;
-    for (auto neuron : neurons) {
-        neuronsWeight.emplace_back(neuron->getPreActivation());
-    }
-    return neuronsWeight;
 }
 
 
@@ -154,6 +120,7 @@ std::vector<std::vector<float>> Layer::getNeuronWeight() {
 
 void Layer::layerGradientDescent(std::vector<std::vector<float>> previousLayerActivation) {
     for(auto neuron : neurons){
+        std::cout << *neuron;
         neuron->gradientDescent(previousLayerActivation);
     }
 
@@ -168,15 +135,6 @@ std::vector<std::vector<float>> Layer::getNeuronErrors(){
     }
     return neuronsError;
 
-}
-std::vector<float> Layer::getWeightFromVector() {
-    std::vector<float> weightFromVector;
-    for(auto w : this->getNeuronWeight()) {
-        for (unsigned i(0); i < w.size() -1; ++i) {
-            weightFromVector.emplace_back(w[i]);
-        }
-    }
-    return weightFromVector;
 }
 
 const std::vector<Neuron *> &Layer::getNeurons() const {
