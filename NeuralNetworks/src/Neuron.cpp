@@ -11,12 +11,14 @@ Neuron::Neuron( const unsigned short & nbWeights )
 {
     /* initialisation des poids est des biais*/
     for(unsigned i =0;i<nbWeights;++i){
-        if(rand()%2)
-            weights.emplace_back( -1 *rand() % maxWeight);
+        if(rand()%2){
+            weights.emplace_back(static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/4.0)) );//-1 *rand() % maxWeight);
+
+
+        }
         else{
-            weights.emplace_back( rand() % maxWeight);}
-
-
+            weights.emplace_back(- static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/4.0)) );
+        }
     }
 
     bias = rand()% maxBias;
@@ -110,7 +112,7 @@ void Neuron::resetActivations() {
     preActivation.clear();
 }
 
-void Neuron::processLastNeuronError(std::vector<float> activationBP) {
+void Neuron::processLastNeuronError(const std::vector<float> &activationBP) {
 
     for ( unsigned i = 0; i < activationBP.size() ; ++i ) {
         this->error.emplace_back(this->getActivation(i) - activationBP[i]);
@@ -120,28 +122,33 @@ void Neuron::processLastNeuronError(std::vector<float> activationBP) {
  * process the changes on the weights and biaises
  * - learningRate * (1/numberOfFeedForwards) * (partials derivatives of the costs with respect to this neuron summed up)
  */
-void Neuron::gradientDescent(std::vector<std::vector<float>> previousLayerActivations) {
+void Neuron::gradientDescent(const std::vector<std::vector<float>> &previousLayerActivations) {
     //std::cout << "\n passage dans gradient descent\n";
 
     //bias update
     float meanError = 0;
     for(auto feedforwardError : error){
+
         meanError += feedforwardError;
     }
     meanError  /= error.size();
 
     bias += - (Network::learningRate) * meanError;
+    //if(bias != bias){
+    //}
     //weights update
     //  there as much weights in the current neuron as the number of neurons in the previous layer
-
+    //for every weights in this neuron
     for(unsigned weightNumber = 0 ; weightNumber< weights.size()-1; ++weightNumber){
 
         float weightChangesSummed = 0;
+        //for every feedforward
         for(unsigned feedforwarNumber =0; feedforwarNumber< previousLayerActivations.size()-1; ++feedforwarNumber){
          //   weightChangesSummed += error[feedforwarNumber] * previousLayerActivations[feedforwarNumber][weightNumber];
+            //error for this feedforward * activation pour le neuron associé à ce poids dans le layer d'avant pour ce feedforward
         }
 
-       // weights[weightNumber]  += - (Network::learningRate/error.size()) *  (weightChangesSummed/error.size())   ;
+       // weights[weightNumber]  += - (Network::learningRate/(error.size())) *  (weightChangesSummed/error.size())   ;
     }
 }
 

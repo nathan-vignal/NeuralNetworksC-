@@ -39,10 +39,10 @@ private:
         void debugSetBias(int newBias);
 
         void addError(float error);
-        void gradientDescent(std::vector<std::vector<float>> previousLayerActivations);
+        void gradientDescent(const std::vector<std::vector<float>> &previousLayerActivations);
 
         void resetActivations();
-        void processLastNeuronError(std::vector<float> activationBP);
+        void processLastNeuronError(const std::vector<float> &activationBP);
 
     friend std::ostream &operator<<(std::ostream &os, const Neuron &neuron);
 };

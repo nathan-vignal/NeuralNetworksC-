@@ -31,7 +31,7 @@ public:
     void processCost();
     void resetActivations();
     void vectorResizing(std::vector<std::vector<float>> vector, unsigned rows, unsigned columns );
-    void backPropagation(unsigned short numberOfTheEpoch);
+    void backPropagation(const unsigned short &numberOfTheEpoch);
     void gradientDescent(unsigned short batchNumber);
     friend std::ostream& operator<< (std::ostream& stream, Network & network);
 };

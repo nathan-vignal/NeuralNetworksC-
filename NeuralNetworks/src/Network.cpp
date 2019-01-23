@@ -135,18 +135,17 @@ void Network::main() {
         //processCost(); inutile
         backPropagation(i);
         gradientDescent(i);
-
         resetActivations();
     }
 }
 
-void Network::backPropagation(unsigned short numberOfTheEpoch) {
+void Network::backPropagation(const unsigned short &numberOfTheEpoch) {
     //process the partial derivative with respect to z for each layer
     //cout << "batch backpropagation"<<endl;
 
     layers[layers.size()-1]->processLastLayerError(output[numberOfTheEpoch]); //process the partial derivative of c with respect to z for the last layer
     //std::cout << * layers[layers.size()-1];
-    for(unsigned i = (unsigned)layers.size()-2 ; i >= 0 && i<9999; --i){ //use the partial derivative c/z of the n+1 layer to process it for n
+    for(unsigned i = (unsigned)layers.size()-2 ; i >= 0 && i<999999; --i){ //use the partial derivative c/z of the n+1 layer to process it for n
                 //condition i<99999 car 0-1 = 42000000 dans le référentiel des unsigned
         layers[i]->processLayerError(*layers[i+1]);
 
@@ -155,7 +154,7 @@ void Network::backPropagation(unsigned short numberOfTheEpoch) {
 
 void Network::gradientDescent(unsigned short batchNumber) {
     for(unsigned layerNumber =layers.size()-1; layerNumber>0;--layerNumber  ){
-        layers[layerNumber]->layerGradientDescent(layers[layerNumber-1]->getMyactivations());
+        layers[layerNumber]->layerGradientDescent( layers[layerNumber-1]->getMyactivations());
     }
    /* for (auto t : entries[batchNumber]){
         std::cout << "lastLayer[";
