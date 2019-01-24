@@ -153,6 +153,7 @@ void Network::main() {
 
         //processCost(); inutile
         backPropagation(numberOfTheEpoch);
+        //std::cout<< *this;
         gradientDescent(numberOfTheEpoch);
 
         resetActivations();

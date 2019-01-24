@@ -130,13 +130,20 @@ void Neuron::gradientDescent(const std::vector<std::vector<float>> &previousLaye
 
     //bias update
     float meanError = 0;
+    //faire la moyenne de erreur du neurone
     for(auto feedforwardError : errors){
 
         meanError += feedforwardError;
+        /*if(feedforwardError >999999 || (feedforwardError <0.000001 && feedforwardError >-0.000001)) {
+        std::cout << '\n'<<feedforwardError;
+        }*/
     }
     meanError  /= errors.size();
 
     bias += - (Network::learningRate) * meanError;
+   /* if(bias >99999999 || (bias <0.000001 && bias >-0.000001)){
+        std::cout << "bias vaut inf " << (Network::learningRate) * meanError<<std::endl;
+    }*/
     //if(bias != bias){
     //}
     //weights update

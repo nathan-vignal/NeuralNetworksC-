@@ -94,9 +94,16 @@ void Layer::processLayerError(const Layer &nextLayer)  {
             for(auto nextLayerNeuron : nextLayer.getNeurons()){ // for each of the nextLayer neurons
 
                 sum +=  nextLayerNeuron->getError()[feedforwardNumber] * nextLayerNeuron->getWeights()[feedforwardNumber];
+                if(nextLayerNeuron->getWeights()[feedforwardNumber] >999999 ) {
 
+                    if(nextLayerNeuron->getWeights()[feedforwardNumber]< 10){
+                        std::cout <<'\n'<<"c++ est cassé   " <<nextLayerNeuron->getWeights()[feedforwardNumber] ;
+                    }
+                }
+               // std::cout << "pas dedans";
                 //sum += weights(to the next neuron)* error(in the linked neuron)
             }
+
             //sum /= nextLayer.getNeurons().size(); ne convient pas à la formule à premiere vu
             neuron->addError(Neuron::sigmoidPrime( neuron->getPreActivation()[feedforwardNumber])* sum);
             sum = 0;
