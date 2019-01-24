@@ -4,8 +4,8 @@
 #include <Network.h>
 //int Exemple::compteur = 0;
 
-unsigned short Neuron::maxWeight = 3;
-unsigned short Neuron::maxBias = 3;
+unsigned short Neuron::maxWeight = 4;
+unsigned short Neuron::maxBias = 4;
 
 Neuron::Neuron( const unsigned short & nbWeights )
 {
@@ -97,7 +97,7 @@ std::vector<float> Neuron::getError() {
 std::ostream &operator<<(std::ostream &os, const Neuron &neuron) {
     os << "neuron :";// << neuron.bias;
     //os<< neuron.error.size();
-    for (auto activation : neuron.errors) {// mettre activations
+    for (auto activation : neuron.errors) {
 
         os << activation;
         os << "  ";
@@ -150,6 +150,7 @@ void Neuron::gradientDescent(const std::vector<std::vector<float>> &previousLaye
             weightChangesSummed += errors[feedforwarNumber] * previousLayerActivations[feedforwarNumber][weightNumber];
             //error for this feedforward * activation pour le neuron associé à ce poids dans le layer d'avant pour ce feedforward
         }
+
         weights[weightNumber]  += - (Network::learningRate/(errors.size())) *  weightChangesSummed ;
 
             //std::cout << -(Network::learningRate/(error.size())) *  (weightChangesSummed) <<" ";

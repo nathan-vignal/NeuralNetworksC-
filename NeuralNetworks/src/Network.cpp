@@ -63,9 +63,7 @@ Network::~Network() {
 
 void Network::feedforward(const unsigned short numberOfTheEpoch) {
     layers[0]->processMyNeuronsActivations(entries[numberOfTheEpoch]);
-    if(numberOfTheEpoch%100 == 0){
-        std::cout << "numberOfTheEpoch " << numberOfTheEpoch <<endl;
-    }
+
 
     for(unsigned i=1; i < layers.size(); ++i){
         layers[i]->processMyNeuronsActivations(layers[i-1]->getMyactivations());
@@ -91,9 +89,9 @@ vector<vector<float>> Network::testFeedforward(const std::vector<float> &entries
 
 std::ostream& operator<< (std::ostream& stream, Network & network) {
     stream << '\n';
-    stream << "\nnetwork of "<< network.layers.size()<<" layers :" << '\n';
+    stream << "\nNETWORK of "<< network.layers.size()<<" layers :" << '\n';
     for (const auto layer : network.layers) {
-        stream << " layer ";
+        stream << " LAYER ";
         stream <<  * layer<<endl;
 
 
@@ -146,12 +144,17 @@ void Network::resetActivations() {
 }
 
 void Network::main() {
-    for(unsigned short i=0 ; i<numberOfEpochs; ++i){
-        feedforward(i);
+    for(unsigned short numberOfTheEpoch=0 ; numberOfTheEpoch<numberOfEpochs; ++numberOfTheEpoch){
+        if(numberOfTheEpoch%5 == 0){
+            std::cout << "numberOfTheEpoch " << numberOfTheEpoch <<endl;
+        }
+
+        feedforward(numberOfTheEpoch);
+
         //processCost(); inutile
-        backPropagation(i);
-        gradientDescent(i);
-        std::cout << *this;
+        backPropagation(numberOfTheEpoch);
+        gradientDescent(numberOfTheEpoch);
+
         resetActivations();
     }
 }
@@ -170,8 +173,8 @@ void Network::backPropagation(const unsigned short &numberOfTheEpoch) {
 }
 
 void Network::gradientDescent(unsigned short batchNumber) {
+
     for(unsigned layerNumber =layers.size()-1; layerNumber>0;--layerNumber  ){
-        std::cout << "marche";
         layers[layerNumber]->layerGradientDescent( layers[layerNumber-1]->getMyactivations());
     }
    /* for (auto t : entries[batchNumber]){

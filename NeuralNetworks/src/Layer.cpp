@@ -75,7 +75,7 @@ void Layer::processLastLayerError(std::vector<std::vector<float>> output){
 }
 
 /**
- *
+ * calcul l'erreur pour chaque neurone pour chaque feedforward
  * @param nextLayer
  */
 void Layer::processLayerError(const Layer &nextLayer)  {
@@ -97,7 +97,7 @@ void Layer::processLayerError(const Layer &nextLayer)  {
 
                 //sum += weights(to the next neuron)* error(in the linked neuron)
             }
-            sum /= nextLayer.getNeurons().size();
+            //sum /= nextLayer.getNeurons().size(); ne convient pas à la formule à premiere vu
             neuron->addError(Neuron::sigmoidPrime( neuron->getPreActivation()[feedforwardNumber])* sum);
             sum = 0;
 
