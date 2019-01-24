@@ -12,12 +12,12 @@ Neuron::Neuron( const unsigned short & nbWeights )
     /* initialisation des poids est des biais*/
     for(unsigned i =0;i<nbWeights;++i){
         if(rand()%2){
-            weights.emplace_back(static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/4.0)) );//-1 *rand() % maxWeight);
+            weights.emplace_back(static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/float(maxWeight))) );//-1 *rand() % maxWeight);
 
 
         }
         else{
-            weights.emplace_back(- static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/4.0)) );
+            weights.emplace_back(- static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/float(maxWeight))) );
         }
     }
 
@@ -91,12 +91,13 @@ const float& Neuron::getActivation(const unsigned short adress) {
 }
 
 std::vector<float> Neuron::getError() {
-    return error;
+    return errors;
 }
 
 std::ostream &operator<<(std::ostream &os, const Neuron &neuron) {
     os << "neuron :";// << neuron.bias;
-    for (auto activation : neuron.activations) {// mettre activations
+    //os<< neuron.error.size();
+    for (auto activation : neuron.errors) {// mettre activations
 
         os << activation;
         os << "  ";
@@ -108,14 +109,16 @@ std::ostream &operator<<(std::ostream &os, const Neuron &neuron) {
 
 void Neuron::resetActivations() {
     activations.clear();
-    error.clear();
+    errors.clear();
     preActivation.clear();
 }
 
-void Neuron::processLastNeuronError(const std::vector<float> &activationBP) {
+void Neuron::processLastNeuronError(const std::vector<float> &outputError) {
 
-    for ( unsigned i = 0; i < activationBP.size() ; ++i ) {
-        this->error.emplace_back(this->getActivation(i) - activationBP[i]);
+
+    for ( unsigned i = 0; i < outputError.size() ; ++i ) {
+        //std::cout <<" error for the last layer"<<this->getActivation(i) - outputError[i];
+        this->errors.emplace_back(this->getActivation(i) - outputError[i]);
     }
 }
 /**
@@ -127,11 +130,11 @@ void Neuron::gradientDescent(const std::vector<std::vector<float>> &previousLaye
 
     //bias update
     float meanError = 0;
-    for(auto feedforwardError : error){
+    for(auto feedforwardError : errors){
 
         meanError += feedforwardError;
     }
-    meanError  /= error.size();
+    meanError  /= errors.size();
 
     bias += - (Network::learningRate) * meanError;
     //if(bias != bias){
@@ -139,17 +142,19 @@ void Neuron::gradientDescent(const std::vector<std::vector<float>> &previousLaye
     //weights update
     //  there as much weights in the current neuron as the number of neurons in the previous layer
     //for every weights in this neuron
-    for(unsigned weightNumber = 0 ; weightNumber< weights.size()-1; ++weightNumber){
-
+    for(unsigned weightNumber = 0 ; weightNumber< weights.size(); ++weightNumber){
         float weightChangesSummed = 0;
         //for every feedforward
-        for(unsigned feedforwarNumber =0; feedforwarNumber< previousLayerActivations.size()-1; ++feedforwarNumber){
-         //   weightChangesSummed += error[feedforwarNumber] * previousLayerActivations[feedforwarNumber][weightNumber];
+        for(unsigned feedforwarNumber =0; feedforwarNumber< previousLayerActivations.size(); ++feedforwarNumber){
+
+            weightChangesSummed += errors[feedforwarNumber] * previousLayerActivations[feedforwarNumber][weightNumber];
             //error for this feedforward * activation pour le neuron associé à ce poids dans le layer d'avant pour ce feedforward
         }
+        weights[weightNumber]  += - (Network::learningRate/(errors.size())) *  weightChangesSummed ;
 
-       // weights[weightNumber]  += - (Network::learningRate/(error.size())) *  (weightChangesSummed/error.size())   ;
+            //std::cout << -(Network::learningRate/(error.size())) *  (weightChangesSummed) <<" ";
     }
+
 }
 
 
@@ -162,7 +167,7 @@ const std::vector<float> &Neuron::getPreActivation() const {
 }
 
 void Neuron::addError(float _error) {
-    error.emplace_back(_error);
+    errors.emplace_back(_error);
 }
 
 void Neuron::debugSetBias(int newBias) {

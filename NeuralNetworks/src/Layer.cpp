@@ -60,16 +60,14 @@ void Layer::resetActivations() {
  */
 void Layer::processLastLayerError(std::vector<std::vector<float>> output){
 
-
+    //pour chaque neurone
     for(unsigned neuronNumber=0; neuronNumber<neurons.size();++neuronNumber){
         std::vector<float> outputForTheNeuronN;
         //modèle le vecteur des valeurs attendu pour ce neuron, à partir du vecteur output
-        for(unsigned feedForwardNumber=0; feedForwardNumber<output[0].size()-1; ++feedForwardNumber){
+        for(unsigned feedForwardNumber=0; feedForwardNumber<output.size(); ++feedForwardNumber){
             outputForTheNeuronN.emplace_back(output[feedForwardNumber][neuronNumber]);
-
         }
-
-        //donne au neuron le vecteur des valeurs attendu pour qu'il calcule son erreur
+        //donne au neuron le vecteur des valeurs attendu pour qu'il calcule son erreur à chaque feedForward
         neurons[neuronNumber]->processLastNeuronError(outputForTheNeuronN);
         outputForTheNeuronN.clear();
     }
@@ -90,10 +88,11 @@ void Layer::processLayerError(const Layer &nextLayer)  {
 
     for(auto neuron : neurons){ // for each of my neurons
         float sum = 0;
-        for(unsigned feedforwardNumber=0 ; feedforwardNumber < nextLayer.getNeuronErrors().size()-1; ++feedforwardNumber){ //for each of the feeforwards
+        //for each of the feeforwards
+        for(unsigned feedforwardNumber=0 ; feedforwardNumber < nextLayer.getNeuronErrors()[0].size(); ++feedforwardNumber){
 
             for(auto nextLayerNeuron : nextLayer.getNeurons()){ // for each of the nextLayer neurons
-                //std::cout << "ha" << nextLayerNeuron->getError()[feedforwardNumber] ;
+
                 sum +=  nextLayerNeuron->getError()[feedforwardNumber] * nextLayerNeuron->getWeights()[feedforwardNumber];
 
                 //sum += weights(to the next neuron)* error(in the linked neuron)

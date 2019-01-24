@@ -18,7 +18,7 @@ Network::Network(const unsigned short &nbLayer, const unsigned short &nbNeuron,
     for(unsigned i = 1 ; i<=numberOfEpochs; ++i){
         output.emplace_back( std::vector<std::vector<float> > (&_output[(_output.size()/numberOfEpochs)*(i-1)],&_output[(_output.size()/numberOfEpochs)*(i)]));
     }
-    /*
+/*
     for(auto & first : entries){
         cout << "\n";
         for(auto & second : first){
@@ -28,7 +28,20 @@ Network::Network(const unsigned short &nbLayer, const unsigned short &nbNeuron,
             }
             cout << "]";
         }
-    }*/
+    }
+    std::cout <<'\n'<<'\n';
+    for(auto & first : output){
+        cout << "\n";
+        for(auto & second : first){
+            cout << "[";
+            for( auto & data : second){
+                cout << data <<" ";
+            }
+            cout << "]";
+        }
+    }
+    */
+
 
 
     Layer *  firstLayer = new Layer(nbNeuron,(unsigned short)entries[0][0].size());
@@ -77,12 +90,15 @@ vector<vector<float>> Network::testFeedforward(const std::vector<float> &entries
 
 
 std::ostream& operator<< (std::ostream& stream, Network & network) {
-    cout << "\nnetwork of "<< network.layers.size()<<" layers :" << '\n';
+    stream << '\n';
+    stream << "\nnetwork of "<< network.layers.size()<<" layers :" << '\n';
     for (const auto layer : network.layers) {
         stream << " layer ";
         stream <<  * layer<<endl;
 
+
     }
+    stream << '\n';
     return stream;
 }
 
@@ -135,6 +151,7 @@ void Network::main() {
         //processCost(); inutile
         backPropagation(i);
         gradientDescent(i);
+        std::cout << *this;
         resetActivations();
     }
 }
@@ -154,6 +171,7 @@ void Network::backPropagation(const unsigned short &numberOfTheEpoch) {
 
 void Network::gradientDescent(unsigned short batchNumber) {
     for(unsigned layerNumber =layers.size()-1; layerNumber>0;--layerNumber  ){
+        std::cout << "marche";
         layers[layerNumber]->layerGradientDescent( layers[layerNumber-1]->getMyactivations());
     }
    /* for (auto t : entries[batchNumber]){

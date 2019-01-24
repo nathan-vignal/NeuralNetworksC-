@@ -8,7 +8,8 @@ int main()
 {
     vector<vector<float>> input ;
     vector<vector<float>> output ;
-    Feeder::createData( input,  output);/*
+    Feeder::createData( input,  output);
+    /*
     for(auto truc : input){
         cout << '\n';
         for(auto truc2: truc){
@@ -22,7 +23,7 @@ int main()
     vector<vector<float>> output = {{0,1,1,0},{1,0,1,0},{1,1,1,0},{0,0,1,0}};*/
                     //Network(nombre de layer, nombre de neuron par layer, input, output)
 
-    Network network((unsigned short)3,(unsigned short)4,input,output,1000);
+    Network network((unsigned short)3,(unsigned short)3,input,output,100);
     //network.feedforward(0);
     //network.backPropagation(0);
 
