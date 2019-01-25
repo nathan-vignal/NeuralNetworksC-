@@ -145,8 +145,8 @@ void Network::resetActivations() {
 
 void Network::main() {
     for(unsigned short numberOfTheEpoch=0 ; numberOfTheEpoch<numberOfEpochs; ++numberOfTheEpoch){
-        if(numberOfTheEpoch%1 == 0){
-            std::cout << "\n \n numberOfTheEpoch " << numberOfTheEpoch <<endl;
+        if(numberOfTheEpoch%1000 == 0){
+            std::cout <<'\n'<< " numberOfTheEpoch " << numberOfTheEpoch <<endl;
         }
         feedforward(numberOfTheEpoch);
 
@@ -177,12 +177,6 @@ void Network::gradientDescent(unsigned short batchNumber) {
     for(unsigned layerNumber =layers.size()-1; layerNumber>0;--layerNumber  ){
         layers[layerNumber]->layerGradientDescent( layers[layerNumber-1]->getMyactivations());
     }
-   /* for (auto t : entries[batchNumber]){
-        std::cout << "lastLayer[";
-        for( auto y : t)
-        std::cout << y;
-        std::cout << "] \n";
-    }*/
     layers[0]->layerGradientDescent(entries[batchNumber]);
 
 }

@@ -154,7 +154,6 @@ void Neuron::gradientDescent(const std::vector<std::vector<float>> &previousLaye
     for(unsigned weightNumber = 0 ; weightNumber< weights.size(); ++weightNumber){
         float weightChangesSummed = 0;
         //for every feedforward
-        std::cout << '\n';
         for(unsigned feedforwarNumber =0; feedforwarNumber< previousLayerActivations.size(); ++feedforwarNumber){
             weightChangesSummed += errors[feedforwarNumber] * previousLayerActivations[feedforwarNumber][weightNumber];
             //error for this feedforward * activation pour le neuron associé à ce poids dans le layer d'avant pour ce feedforward
