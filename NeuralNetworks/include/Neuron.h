@@ -21,6 +21,10 @@ public:
 private:
     std::vector<float> weights;
     std::vector<float> errors;
+public:
+    const std::vector<float> &getErrors() const;
+
+private:
     float bias;
 public:
     Neuron( const unsigned short & nbWeights );

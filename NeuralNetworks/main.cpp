@@ -23,19 +23,18 @@ int main()
     vector<vector<float>> output = {{0,1,1,0},{1,0,1,0},{1,1,1,0},{0,0,1,0}};*/
                     //Network(nombre de layer, nombre de neuron par layer, input, output)
 
-    Network network((unsigned short)3,(unsigned short)3,input,output,100);
+    Network network((unsigned short)1,(unsigned short)4,input,output,10);
     //network.feedforward(0);
-    //network.backPropagation(0);
+    //network.backPropagation(0)
 
 
     network.main();
+    std::cout<< '\n';
     while(1){
         float first = 0;
         float second = 0;
         float third = 0;
         float four = 0;
-
-
 
         cout << "veuillez entrer un vecteur ";
         cin >> first;

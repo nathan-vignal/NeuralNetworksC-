@@ -3,7 +3,7 @@
 #include <math.h>
 using namespace std;
 
-const float Network::learningRate = 0.15;
+const float Network::learningRate = 0.10;
 Network::Network(const unsigned short &nbLayer, const unsigned short &nbNeuron,
                  const std::vector<std::vector<float> > &_entries, const std::vector<std::vector<float> > &_output
         , const unsigned short & _numberOfEpochs) {
@@ -145,15 +145,14 @@ void Network::resetActivations() {
 
 void Network::main() {
     for(unsigned short numberOfTheEpoch=0 ; numberOfTheEpoch<numberOfEpochs; ++numberOfTheEpoch){
-        if(numberOfTheEpoch%5 == 0){
-            std::cout << "numberOfTheEpoch " << numberOfTheEpoch <<endl;
+        if(numberOfTheEpoch%1 == 0){
+            std::cout << "\n \n numberOfTheEpoch " << numberOfTheEpoch <<endl;
         }
-
         feedforward(numberOfTheEpoch);
 
         //processCost(); inutile
         backPropagation(numberOfTheEpoch);
-        //std::cout<< *this;
+
         gradientDescent(numberOfTheEpoch);
 
         resetActivations();
@@ -168,7 +167,7 @@ void Network::backPropagation(const unsigned short &numberOfTheEpoch) {
     //std::cout << * layers[layers.size()-1];
     for(unsigned i = (unsigned)layers.size()-2 ; i >= 0 && i<999999; --i){ //use the partial derivative c/z of the n+1 layer to process it for n
                 //condition i<99999 car 0-1 = 42000000 dans le référentiel des unsigned
-        layers[i]->processLayerError(*layers[i+1]);
+        layers[i]->processLayerError(  layers[i+1] );
 
     }
 }

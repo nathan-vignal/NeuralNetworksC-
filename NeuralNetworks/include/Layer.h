@@ -21,7 +21,7 @@ public:
     void processMyNeuronsActivations(const std::vector <std::vector<float>> & previousLayerActivations);
     void resetActivations();
     void processLastLayerError(std::vector<std::vector<float>> output);
-    void processLayerError(const Layer &nextLayer) ;
+    void processLayerError(const Layer *nextLayer) ;
     std::vector<float> getErrorFromVector();
     std::vector<float> getWeightFromVector();
     std::vector<std::vector<float>> getNeuronErrors()const;

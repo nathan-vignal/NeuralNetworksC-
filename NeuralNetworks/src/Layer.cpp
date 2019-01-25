@@ -78,7 +78,7 @@ void Layer::processLastLayerError(std::vector<std::vector<float>> output){
  * calcul l'erreur pour chaque neurone pour chaque feedforward
  * @param nextLayer
  */
-void Layer::processLayerError(const Layer &nextLayer)  {
+void Layer::processLayerError(const Layer *nextLayer)  {
     //use to debug
     /*std::cout << " PROCESS layer error" <<std::endl;
     for(auto neuron : nextLayer.getNeurons()){
@@ -86,26 +86,19 @@ void Layer::processLayerError(const Layer &nextLayer)  {
         std::cout << '\n' <<std::endl;
     }*/
 
-    for(auto neuron : neurons){ // for each of my neurons
+    //pour chaque neurone
+    for(unsigned neuronNumber = 0; neuronNumber < neurons.size(); ++neuronNumber){
         float sum = 0;
-        //for each of the feeforwards
-        for(unsigned feedforwardNumber=0 ; feedforwardNumber < nextLayer.getNeuronErrors()[0].size(); ++feedforwardNumber){
+        //pour chaque feedforward
+        for(unsigned feedforwardNumber=0 ; feedforwardNumber < nextLayer->getNeurons()[0]->getError().size(); ++feedforwardNumber){
+            //pour chaque neurone dans le layer suivant
+            for(unsigned nextLayerNeuronNumber = 0 ; nextLayerNeuronNumber < nextLayer->getNeurons().size() ;++nextLayerNeuronNumber ){
+                sum +=  nextLayer->getNeurons()[nextLayerNeuronNumber]->getError()[feedforwardNumber] *
+                       nextLayer->getNeurons()[nextLayerNeuronNumber]->getWeights()[neuronNumber];
 
-            for(auto nextLayerNeuron : nextLayer.getNeurons()){ // for each of the nextLayer neurons
-
-                sum +=  nextLayerNeuron->getError()[feedforwardNumber] * nextLayerNeuron->getWeights()[feedforwardNumber];
-                if(nextLayerNeuron->getWeights()[feedforwardNumber] >999999 ) {
-
-                    if(nextLayerNeuron->getWeights()[feedforwardNumber]< 10){
-                        std::cout <<'\n'<<"c++ est cassé   " <<nextLayerNeuron->getWeights()[feedforwardNumber] ;
-                    }
-                }
-               // std::cout << "pas dedans";
-                //sum += weights(to the next neuron)* error(in the linked neuron)
             }
 
-            //sum /= nextLayer.getNeurons().size(); ne convient pas à la formule à premiere vu
-            neuron->addError(Neuron::sigmoidPrime( neuron->getPreActivation()[feedforwardNumber])* sum);
+           neurons[neuronNumber]->addError(Neuron::sigmoidPrime( neurons[neuronNumber]->getPreActivation()[feedforwardNumber])* sum);
             sum = 0;
 
 
