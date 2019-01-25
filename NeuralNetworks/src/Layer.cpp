@@ -90,11 +90,14 @@ void Layer::processLayerError(const Layer *nextLayer)  {
     for(unsigned neuronNumber = 0; neuronNumber < neurons.size(); ++neuronNumber){
         float sum = 0;
         //pour chaque feedforward
-        for(unsigned feedforwardNumber=0 ; feedforwardNumber < nextLayer->getNeurons()[0]->getError().size(); ++feedforwardNumber){
+        unsigned int numberOfFeedFowards = nextLayer->getNeurons()[0]->getError().size();
+        for(unsigned feedforwardNumber=0 ; feedforwardNumber < numberOfFeedFowards; ++feedforwardNumber){
             //pour chaque neurone dans le layer suivant
-            for(unsigned nextLayerNeuronNumber = 0 ; nextLayerNeuronNumber < nextLayer->getNeurons().size() ;++nextLayerNeuronNumber ){
-                sum +=  nextLayer->getNeurons()[nextLayerNeuronNumber]->getError()[feedforwardNumber] *
-                       nextLayer->getNeurons()[nextLayerNeuronNumber]->getWeights()[neuronNumber];
+            double numberOfNeuronNextLayer = nextLayer->getNeurons().size();
+            for(unsigned nextLayerNeuronNumber = 0 ; nextLayerNeuronNumber < numberOfNeuronNextLayer ;++nextLayerNeuronNumber ){
+                Neuron * neuronLinkedByWeight = nextLayer->getNeurons()[nextLayerNeuronNumber];
+                sum +=  neuronLinkedByWeight->getError()[feedforwardNumber] *
+                       neuronLinkedByWeight->getWeights()[neuronNumber];
 
             }
 
