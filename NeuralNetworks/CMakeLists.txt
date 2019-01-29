@@ -10,6 +10,8 @@ add_executable(NeuralNetworks
         include/Network.h
         include/Neuron.h
         include/Feeder.h
+        src/mnist_reader.hpp
+        src/mnist_reader_common.hpp
         src/Feeder.cpp
         src/Layer.cpp
         src/Network.cpp
