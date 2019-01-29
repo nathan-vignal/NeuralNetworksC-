@@ -20,8 +20,8 @@ private:
 
 public:
     const static float learningRate ;
-    Network(const unsigned short & nbLayers,const unsigned short & nbNeurons,const std::vector<std::vector<float> > & _entries,
-            const std::vector<std::vector<float> > & _output, const unsigned short & _numberOfEpochs  );
+    Network(const std::vector<unsigned short> &hiddenLayers, const std::vector<std::vector<float> > &_entries,
+                const std::vector<std::vector<float> > &_output, const unsigned short &_numberOfEpochs);
     virtual ~Network();
     const std::vector<float> &getCost() const;
     const std::vector<Layer *> &getLayers() const;

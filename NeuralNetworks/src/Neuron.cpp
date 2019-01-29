@@ -143,11 +143,7 @@ void Neuron::gradientDescent(const std::vector<std::vector<float>> &previousLaye
     meanError  /= errors.size();
 
     bias += - (Network::learningRate) * meanError;
-   /* if(bias >99999999 || (bias <0.000001 && bias >-0.000001)){
-        std::cout << "bias vaut inf " << (Network::learningRate) * meanError<<std::endl;
-    }*/
-    //if(bias != bias){
-    //}
+
     //weights update
     //  there as much weights in the current neuron as the number of neurons in the previous layer
     //for every weights in this neuron

@@ -3,10 +3,9 @@
 #include <math.h>
 using namespace std;
 
-const float Network::learningRate = 0.10;
-Network::Network(const unsigned short &nbLayer, const unsigned short &nbNeuron,
-                 const std::vector<std::vector<float> > &_entries, const std::vector<std::vector<float> > &_output
-        , const unsigned short & _numberOfEpochs) {
+const float Network::learningRate = 2;
+Network::Network(const std::vector<unsigned short> &hiddenLayers, const std::vector<std::vector<float> > &_entries,
+                 const std::vector<std::vector<float> > &_output, const unsigned short &_numberOfEpochs) {
 
     //output = _output;
     numberOfEpochs = _numberOfEpochs;
@@ -44,14 +43,18 @@ Network::Network(const unsigned short &nbLayer, const unsigned short &nbNeuron,
 
 
 
-    Layer *  firstLayer = new Layer(nbNeuron,(unsigned short)entries[0][0].size());
+    Layer *  firstLayer = new Layer(hiddenLayers[0],(unsigned short)entries[0][0].size());
     layers.emplace_back(firstLayer );  //emplace_back plus opti que push_back
 
-    for (unsigned i=1; i<nbLayer-1; ++i){
-        auto * layer = new Layer(nbNeuron,nbNeuron);
+
+
+
+
+    for (unsigned i=1; i<hiddenLayers.size(); ++i){
+        auto * layer = new Layer(hiddenLayers[i],hiddenLayers[i-1]);
         layers.emplace_back( layer );  //emplace_back plus opti que push_back
     }
-    Layer * lastLayer = new Layer((unsigned short)output[0][0].size(),nbNeuron);
+    Layer * lastLayer = new Layer((unsigned short)output[0][0].size(),hiddenLayers[hiddenLayers.size()-1]);
     layers.emplace_back(lastLayer );  //emplace_back plus opti que push_back
 }
 

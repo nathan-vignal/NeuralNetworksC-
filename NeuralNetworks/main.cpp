@@ -15,7 +15,8 @@ int main()
         for(auto truc2: truc){
             cout << truc2 << " ";
         }
-    }*/
+    }
+     */
 
 
 
@@ -23,7 +24,7 @@ int main()
     vector<vector<float>> output = {{0,1,1,0},{1,0,1,0},{1,1,1,0},{0,0,1,0}};*/
                     //Network(nombre de layer, nombre de neuron par layer, input, output)
 
-    Network network((unsigned short)2,(unsigned short)4,input,output,10000);
+    Network network({4}, input, output, 1000);
     //network.feedforward(0);
     //network.backPropagation(0)
 
