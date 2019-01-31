@@ -8,7 +8,7 @@ class Network
 {
 
 private:
-    std::vector<float> cost;
+    std::vector<float> costs;
     std::vector<std::vector<std::vector<float> >> entries;
     std::vector<std::vector<std::vector<float> >> output;
     unsigned short numberOfEpochs;
@@ -28,9 +28,10 @@ public:
     void main();
     void feedforward( unsigned short numberOfTheEpoch);
     std::vector<std::vector<float>> testFeedforward(const std::vector<float> &entries);
-    void processCost();
+    void processCost(const unsigned int &batchNumber);
+    double processMeanError();
     void resetActivations();
-    void vectorResizing(std::vector<std::vector<float>> vector, unsigned rows, unsigned columns );
+    //void vectorResizing(std::vector<std::vector<float>> vector, unsigned rows, unsigned columns );
     void backPropagation(const unsigned short &numberOfTheEpoch);
     void gradientDescent(unsigned short batchNumber);
     friend std::ostream& operator<< (std::ostream& stream, Network & network);

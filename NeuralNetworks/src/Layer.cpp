@@ -69,7 +69,7 @@ void Layer::processLastLayerError(std::vector<std::vector<float>> output){
         }
         //donne au neuron le vecteur des valeurs attendu pour qu'il calcule son erreur à chaque feedForward
         neurons[neuronNumber]->processLastNeuronError(outputForTheNeuronN);
-        outputForTheNeuronN.clear();
+
     }
 
 }
@@ -90,18 +90,18 @@ void Layer::processLayerError(const Layer *nextLayer)  {
     for(unsigned neuronNumber = 0; neuronNumber < neurons.size(); ++neuronNumber){
         float sum = 0;
         //pour chaque feedforward
-        unsigned int numberOfFeedFowards = nextLayer->getNeurons()[0]->getError().size();
+        unsigned int numberOfFeedFowards = (unsigned int)nextLayer->getNeurons()[0]->getError().size();
         for(unsigned feedforwardNumber=0 ; feedforwardNumber < numberOfFeedFowards; ++feedforwardNumber){
             //pour chaque neurone dans le layer suivant
             double numberOfNeuronNextLayer = nextLayer->getNeurons().size();
             for(unsigned nextLayerNeuronNumber = 0 ; nextLayerNeuronNumber < numberOfNeuronNextLayer ;++nextLayerNeuronNumber ){
                 Neuron * neuronLinkedByWeight = nextLayer->getNeurons()[nextLayerNeuronNumber];
                 sum +=  neuronLinkedByWeight->getError()[feedforwardNumber] *
-                       neuronLinkedByWeight->getWeights()[neuronNumber];
+                        neuronLinkedByWeight->getWeights()[neuronNumber];
 
             }
 
-           neurons[neuronNumber]->addError(Neuron::sigmoidPrime( neurons[neuronNumber]->getPreActivation()[feedforwardNumber])* sum);
+            neurons[neuronNumber]->addError(Neuron::sigmoidPrime( neurons[neuronNumber]->getPreActivation()[feedforwardNumber])* sum);
             sum = 0;
 
 

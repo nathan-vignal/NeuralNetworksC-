@@ -108,36 +108,53 @@ const vector<Layer *> &Network::getLayers() const {
 }
 
 /**
- * process network global cost for each feedforward
- *//*
-void Network::processCost() {
-    cost.clear();
+ * process network global cost for each feedforward in the given batchNumber
+ */
+void Network::processCost(const unsigned int &batchNumber) {
+    costs.clear();
     std::vector<std::vector<float>> lastLayerActivations = getLayers()[getLayers().size()-1]->getMyactivations();
 
     for(unsigned neuronNumber = 0; neuronNumber < lastLayerActivations[0].size(); ++neuronNumber ){
         float cost = 0;
         for(unsigned feedForwardNumber = 0; feedForwardNumber < lastLayerActivations.size(); ++feedForwardNumber){//feedForwardNumber is the number of the entry that was used to process this activation
-            cost += (output[feedForwardNumber][neuronNumber] * log(lastLayerActivations[feedForwardNumber][neuronNumber])
-                     + (1- output[feedForwardNumber][neuronNumber])* log(1- lastLayerActivations[feedForwardNumber][neuronNumber]));
+            cost += (output[batchNumber][feedForwardNumber][neuronNumber] * log(lastLayerActivations[feedForwardNumber][neuronNumber])
+                     + (1- output[batchNumber][feedForwardNumber][neuronNumber])* log(1- lastLayerActivations[feedForwardNumber][neuronNumber]));
             //  the formula used is cross entropy c = y * ln(a) + (1-y) * ln(1-a)
             //        y = output[feedForwardNumber][neuronNumber]  a= lastLayerActivations[feedForwardNumber][neuronNumber]
         }
         cost *= float(-1)/lastLayerActivations.size();
-        this->cost.emplace_back(cost);
+        this->costs.emplace_back(cost);
     }
 
 }
-*/
-const vector<float> &Network::getCost() const {
-    return cost;
+double Network::processMeanError() {
+
+    long double mean = 0;
+    for(auto cost : costs){
+        mean += cost;
+    }
+    mean/= costs.size();
+    if(mean != mean){
+        std::cout << " ||la fonction cross entropy ne fonctionne pas pour ces résultat|| ";
+    }
+    return (double)mean;
+
+
+
 }
 
+
+
+const vector<float> &Network::getCost() const {
+    return costs;
+}
+/*
 void Network::vectorResizing(std::vector<std::vector<float>> vector, unsigned rows, unsigned columns) {
     vector.resize(rows);
     for ( auto &it : vector) {
         it.resize(columns);
     }
-}
+}*/
 
 
 void Network::resetActivations() {
@@ -153,7 +170,9 @@ void Network::main() {
         }
         feedforward(numberOfTheEpoch);
 
-        //processCost(); inutile
+        processCost(numberOfTheEpoch);
+        std::cout << "\nEpoch : "<< numberOfTheEpoch<< " mean error "<< processMeanError();
+
         backPropagation(numberOfTheEpoch);
 
         gradientDescent(numberOfTheEpoch);
@@ -169,7 +188,7 @@ void Network::backPropagation(const unsigned short &numberOfTheEpoch) {
     layers[layers.size()-1]->processLastLayerError(output[numberOfTheEpoch]); //process the partial derivative of c with respect to z for the last layer
     //std::cout << * layers[layers.size()-1];
     for(unsigned i = (unsigned)layers.size()-2 ; i >= 0 && i<999999; --i){ //use the partial derivative c/z of the n+1 layer to process it for n
-                //condition i<99999 car 0-1 = 42000000 dans le référentiel des unsigned
+        //condition i<99999 car 0-1 = 42000000 dans le référentiel des unsigned
         layers[i]->processLayerError(  layers[i+1] );
 
     }
