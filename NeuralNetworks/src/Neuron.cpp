@@ -126,7 +126,7 @@ void Neuron::processLastNeuronError(const std::vector<float> &outputError) {
  * process the changes on the weights and biaises
  * - learningRate * (1/numberOfFeedForwards) * (partials derivatives of the costs with respect to this neuron summed up)
  */
-void Neuron::gradientDescent(const std::vector<std::vector<float>> &previousLayerActivations) {
+void Neuron::gradientDescent(const std::vector<std::vector<float>> &previousLayerActivations, const double &regularizationTerm) {
 
     //std::cout << "\n passage dans gradient descent\n";
 
@@ -154,9 +154,10 @@ void Neuron::gradientDescent(const std::vector<std::vector<float>> &previousLaye
             weightChangesSummed += errors[feedforwarNumber] * previousLayerActivations[feedforwarNumber][weightNumber];
             //error for this feedforward * activation pour le neuron associé à ce poids dans le layer d'avant pour ce feedforward
         }
-        weights[weightNumber]  += - (Network::learningRate/(errors.size())) *  weightChangesSummed ;
+        weights[weightNumber]  +=  (-Network::learningRate/(errors.size())) *  weightChangesSummed
+                -((Network::learningRate*regularizationTerm)/errors.size())*  weights[weightNumber];
 
-            //std::cout << -(Network::learningRate/(error.size())) *  (weightChangesSummed) <<" ";
+            //calcul -> -(learningRate/feedforwards) *  (weightChangesSummed)-(learningRate * lamba)/feedforwards)*weight
     }
 
 }

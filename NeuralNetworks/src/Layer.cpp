@@ -119,10 +119,11 @@ void Layer::processLayerError(const Layer *nextLayer)  {
 
 
 
-void Layer::layerGradientDescent(const std::vector<std::vector<float>> &previousLayerActivation) {
+void Layer::layerGradientDescent(const std::vector<std::vector<float>> &previousLayerActivation,
+                                 const double &regularizationTerm) {
     for(auto neuron : neurons){
         //std::cout << *neuron;
-        neuron->gradientDescent( previousLayerActivation);
+        neuron->gradientDescent(previousLayerActivation, regularizationTerm);
     }
 
 

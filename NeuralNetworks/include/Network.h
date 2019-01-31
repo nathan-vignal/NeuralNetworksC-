@@ -8,6 +8,7 @@ class Network
 {
 
 private:
+    double regularizationTerm;
     std::vector<float> costs;
     std::vector<std::vector<std::vector<float> >> entries;
     std::vector<std::vector<std::vector<float> >> output;
@@ -21,7 +22,8 @@ private:
 public:
     const static float learningRate ;
     Network(const std::vector<unsigned short> &hiddenLayers, const std::vector<std::vector<float> > &_entries,
-                const std::vector<std::vector<float> > &_output, const unsigned short &_numberOfEpochs);
+                const std::vector<std::vector<float> > &_output, const unsigned short &_numberOfEpochs,
+                const double &_regularizationTerm);
     virtual ~Network();
     const std::vector<float> &getCost() const;
     const std::vector<Layer *> &getLayers() const;

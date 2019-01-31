@@ -25,7 +25,8 @@ public:
     std::vector<float> getErrorFromVector();
     std::vector<float> getWeightFromVector();
     std::vector<std::vector<float>> getNeuronErrors()const;
-    void layerGradientDescent(const std::vector<std::vector<float>> &previousLayerActivation);
+    void layerGradientDescent(const std::vector<std::vector<float>> &previousLayerActivation,
+                                  const double &regularizationTerm);
 
 
     std::vector<std::vector<float>> getNeuronWeight();

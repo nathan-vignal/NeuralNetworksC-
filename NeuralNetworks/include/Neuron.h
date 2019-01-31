@@ -43,7 +43,8 @@ public:
     void debugSetBias(int newBias);
 
     void addError(float error);
-    void gradientDescent(const std::vector<std::vector<float>> &previousLayerActivations);
+    void
+    gradientDescent(const std::vector<std::vector<float>> &previousLayerActivations, const double &regularizationTerm);
 
     void resetActivations();
     void processLastNeuronError(const std::vector<float> &outputError);

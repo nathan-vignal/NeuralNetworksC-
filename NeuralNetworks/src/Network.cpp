@@ -5,9 +5,10 @@ using namespace std;
 
 const float Network::learningRate = 2;
 Network::Network(const std::vector<unsigned short> &hiddenLayers, const std::vector<std::vector<float> > &_entries,
-                 const std::vector<std::vector<float> > &_output, const unsigned short &_numberOfEpochs) {
+                 const std::vector<std::vector<float> > &_output, const unsigned short &_numberOfEpochs,
+                 const double &_regularizationTerm) {
 
-    //output = _output;
+    regularizationTerm = _regularizationTerm;
     numberOfEpochs = _numberOfEpochs;
     //distribution of the entry data on epochs
     for(unsigned i = 1 ; i<=numberOfEpochs; ++i){
@@ -197,9 +198,9 @@ void Network::backPropagation(const unsigned short &numberOfTheEpoch) {
 void Network::gradientDescent(unsigned short batchNumber) {
 
     for(unsigned layerNumber =layers.size()-1; layerNumber>0;--layerNumber  ){
-        layers[layerNumber]->layerGradientDescent( layers[layerNumber-1]->getMyactivations());
+        layers[layerNumber]->layerGradientDescent(layers[layerNumber - 1]->getMyactivations(), regularizationTerm);
     }
-    layers[0]->layerGradientDescent(entries[batchNumber]);
+    layers[0]->layerGradientDescent(entries[batchNumber], regularizationTerm);
 
 }
 
