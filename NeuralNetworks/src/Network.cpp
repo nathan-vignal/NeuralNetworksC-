@@ -3,10 +3,12 @@
 #include <math.h>
 using namespace std;
 
-const float Network::learningRate = 2;
+const float Network::learningRate = 0.8;
 Network::Network(const std::vector<unsigned short> &hiddenLayers, const std::vector<std::vector<float> > &_entries,
-                 const std::vector<std::vector<float> > &_output, const unsigned short &_numberOfEpochs,
+                 const std::vector<std::vector<float> > &_output, const unsigned int &_numberOfEpochs,
                  const double &_regularizationTerm) {
+
+
 
     regularizationTerm = _regularizationTerm;
     numberOfEpochs = _numberOfEpochs;
@@ -41,22 +43,30 @@ Network::Network(const std::vector<unsigned short> &hiddenLayers, const std::vec
         }
     }
     */
+    //if there are hidden layers
+    if(0< hiddenLayers.size()){
+        //creating the first hidden layer
+        Layer *  firstLayer = new Layer(hiddenLayers[0],(unsigned short)entries[0][0].size());
+        layers.emplace_back(firstLayer );  //emplace_back plus opti que push_back
 
 
 
-    Layer *  firstLayer = new Layer(hiddenLayers[0],(unsigned short)entries[0][0].size());
-    layers.emplace_back(firstLayer );  //emplace_back plus opti que push_back
 
+        //création des layer
+        for (unsigned i=1; i<hiddenLayers.size(); ++i){
+            auto * layer = new Layer(hiddenLayers[i],hiddenLayers[i-1]);
+            layers.emplace_back( layer );  //emplace_back plus opti que push_back
+        }
 
-
-
-
-    for (unsigned i=1; i<hiddenLayers.size(); ++i){
-        auto * layer = new Layer(hiddenLayers[i],hiddenLayers[i-1]);
-        layers.emplace_back( layer );  //emplace_back plus opti que push_back
+        //output layer
+        Layer * lastLayer = new Layer((unsigned short)output[0][0].size(),hiddenLayers[hiddenLayers.size()-1]);
+        layers.emplace_back(lastLayer );  //emplace_back plus opti que push_back
+    }else{
+        //output layer
+        Layer * lastLayer = new Layer((unsigned short)output[0][0].size(),(unsigned short)entries[0][0].size());
+        layers.emplace_back(lastLayer );  //emplace_back plus opti que push_back
     }
-    Layer * lastLayer = new Layer((unsigned short)output[0][0].size(),hiddenLayers[hiddenLayers.size()-1]);
-    layers.emplace_back(lastLayer );  //emplace_back plus opti que push_back
+
 }
 
 Network::~Network() {
@@ -65,7 +75,7 @@ Network::~Network() {
 
 
 
-void Network::feedforward(const unsigned short numberOfTheEpoch) {
+void Network::feedforward(const unsigned int &numberOfTheEpoch) {
     layers[0]->processMyNeuronsActivations(entries[numberOfTheEpoch]);
 
 
@@ -165,8 +175,8 @@ void Network::resetActivations() {
 }
 
 void Network::main() {
-    for(unsigned short numberOfTheEpoch=0 ; numberOfTheEpoch<numberOfEpochs; ++numberOfTheEpoch){
-        if(numberOfTheEpoch%1000 == 0){
+    for(unsigned int numberOfTheEpoch=0 ; numberOfTheEpoch<numberOfEpochs; ++numberOfTheEpoch){
+        if(numberOfTheEpoch%(numberOfEpochs/10) == 0){
             std::cout <<'\n'<< " numberOfTheEpoch " << numberOfTheEpoch <<endl;
         }
         feedforward(numberOfTheEpoch);
@@ -182,20 +192,22 @@ void Network::main() {
     }
 }
 
-void Network::backPropagation(const unsigned short &numberOfTheEpoch) {
+void Network::backPropagation(const unsigned int &numberOfTheEpoch) {
     //process the partial derivative with respect to z for each layer
     //cout << "batch backpropagation"<<endl;
 
     layers[layers.size()-1]->processLastLayerError(output[numberOfTheEpoch]); //process the partial derivative of c with respect to z for the last layer
     //std::cout << * layers[layers.size()-1];
-    for(unsigned i = (unsigned)layers.size()-2 ; i >= 0 && i<999999; --i){ //use the partial derivative c/z of the n+1 layer to process it for n
+
+    for(unsigned i = layers.size()-2 ; i >= 0 && i<999999; --i){ //use the partial derivative c/z of the n+1 layer to process it for n
         //condition i<99999 car 0-1 = 42000000 dans le référentiel des unsigned
+
         layers[i]->processLayerError(  layers[i+1] );
 
     }
 }
 
-void Network::gradientDescent(unsigned short batchNumber) {
+void Network::gradientDescent(unsigned int batchNumber) {
 
     for(unsigned layerNumber =layers.size()-1; layerNumber>0;--layerNumber  ){
         layers[layerNumber]->layerGradientDescent(layers[layerNumber - 1]->getMyactivations(), regularizationTerm);
