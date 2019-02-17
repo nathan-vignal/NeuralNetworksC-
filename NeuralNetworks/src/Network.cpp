@@ -3,7 +3,7 @@
 #include <math.h>
 using namespace std;
 
-const float Network::learningRate = 0.8;
+const float Network::learningRate = 1;
 Network::Network(const std::vector<unsigned short> &hiddenLayers, const std::vector<std::vector<float> > &_entries,
                  const std::vector<std::vector<float> > &_output, const unsigned int &_numberOfEpochs,
                  const double &_regularizationTerm) {
