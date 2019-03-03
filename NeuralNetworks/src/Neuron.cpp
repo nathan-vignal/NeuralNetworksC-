@@ -1,7 +1,8 @@
-#include "Neuron.h"
+#include "../include/Neuron.h"
+#include "../include/Network.h"
 #include <random>
 #include <iostream>
-#include <Network.h>
+
 //int Exemple::compteur = 0;
 
 unsigned short Neuron::maxWeight = 4;

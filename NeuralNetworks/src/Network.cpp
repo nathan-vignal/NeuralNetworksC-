@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Network.h"
+#include "../include/Network.h"
 #include <math.h>
 using namespace std;
 

@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Layer.h"
+#include "../include/Layer.h"
 Layer::Layer(const unsigned short &nbNeurons, const unsigned short &nbNeuronsInPreviousLayer) {
 
     for(unsigned i = 0; i<nbNeurons;++i){
