@@ -30,7 +30,7 @@ public:
     const std::vector<Layer *> &getLayers() const;
     void main();
     void feedforward(const unsigned int &numberOfTheEpoch);
-    std::vector<std::vector<float>> testFeedforward(const std::vector<float> &entries);
+    std::vector<std::vector<float>> testFeedforward(const std::vector<std::vector<float>> &entries);
     void processCost(const unsigned int &batchNumber);
     double processMeanError();
     void resetActivations();

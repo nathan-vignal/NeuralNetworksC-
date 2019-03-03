@@ -84,13 +84,13 @@ void Network::feedforward(const unsigned int &numberOfTheEpoch) {
     }
 }
 
-vector<vector<float>> Network::testFeedforward(const std::vector<float> &entries) {
+vector<vector<float>> Network::testFeedforward(const vector<vector<float>> &entries) {
     //pour les test
     /*for(auto neuron : this->layers[this->layers.size()-1]->getNeurons()){
         neuron->debugSetBias(10);
     }*/
     //fin pour les test
-    layers[0]->processMyNeuronsActivations({entries});
+    layers[0]->processMyNeuronsActivations(entries);
     for(unsigned i=1; i < layers.size(); ++i){
         layers[i]->processMyNeuronsActivations(layers[i-1]->getMyactivations());
     }

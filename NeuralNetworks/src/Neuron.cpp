@@ -12,7 +12,6 @@ Neuron::Neuron( const unsigned short & nbWeights )
 {
     /* initialisation des poids est des biais*/
     for(unsigned i =0;i<nbWeights;++i){
-        std::cout <<" "<< i;
         if(rand()%2){
             weights.emplace_back(static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/float(maxWeight))) );//-1 *rand() % maxWeight);
 
@@ -48,14 +47,10 @@ void Neuron::processActivations(const std::vector<std::vector<float>> &previousL
 
     for(const std::vector<float> & layerActivation : previousLayerActivations){
         float sum=0;
-        for(auto preActivation : hadamardProduct(layerActivation,weights)){
+        for(const auto & preActivation : hadamardProduct(layerActivation,weights)){
             sum += preActivation;
-
         }
-
-
         sum += bias;
-
         preActivation.emplace_back(sum);
         activations.emplace_back(sigmoid(sum)) ;
     }
@@ -97,13 +92,13 @@ std::vector<float> Neuron::getError() {
 }
 
 std::ostream &operator<<(std::ostream &os, const Neuron &neuron) {
-    os << "neuron :";// << neuron.bias;
-    //os<< neuron.error.size();
+    os << "neuron :" << neuron.bias;
+    /*
     for (auto activation : neuron.weights) {
 
         os << activation;
         os << "  ";
-    }
+    }*/
 
     return os;
 
@@ -134,7 +129,7 @@ void Neuron::gradientDescent(const std::vector<std::vector<float>> &previousLaye
     //bias update
     float meanError = 0;
     //faire la moyenne de erreur du neurone
-    for(auto feedforwardError : errors){
+    for(const auto & feedforwardError : errors){
 
         meanError += feedforwardError;
         /*if(feedforwardError >999999 || (feedforwardError <0.000001 && feedforwardError >-0.000001)) {

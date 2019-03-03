@@ -25,78 +25,86 @@ int main()
     std::cout << "Nbr of test images = " << dataset.test_images.size() << std::endl;         // 10k
     std::cout << "Nbr of test labels = " << dataset.test_labels.size() << std::endl;         // 10k
 
-    return 0;
 
 
-
-    /*
-    vector<vector<float>> input ;
-    vector<vector<float>> output ;
-    Feeder::createData( input,  output);
-     */
-
-    /*
-    for(auto truc : input){
-        cout << '\n';
-        for(auto truc2: truc){
-            cout << truc2 << " ";
+    //vector<vector<float>> input = dataset.training_images ;
+    //vector<vector<float>> outputs = dataset.training_labels;
+    vector<vector<float>> inputs;
+    for(const auto & datasetImage : dataset.training_images){
+        vector<float> image;
+        for(const auto  & pixel: datasetImage){
+            image.emplace_back(static_cast<float>(pixel)/255);//255
         }
+        inputs.emplace_back(image);
     }
-     */
+
+
+    vector<vector<float>> outputs;
+    for(const auto & datasetOutput : dataset.training_labels ){
+        vector<float> output(10,0);
+        unsigned objective =  static_cast<unsigned>(datasetOutput);
+        output[objective] = 1;
+        outputs.emplace_back(output);
+    }
 
 
 
-    /*vector<vector<float>> input = {{0,0.8,0.3,0.9},{1,0.8,0.6,0.4},{0.1,0.2,0.2,0.6},{0.1,0.2,0.2,0.6}};
-    vector<vector<float>> output = {{0,1,1,0},{1,0,1,0},{1,1,1,0},{0,0,1,0}};*/
-                    //Network(nombre de layer, nombre de neuron par layer, input, output)
 
-    //Network network({4,4}, input, output, 1000,0.0000001 );
-    //network.feedforward(0);
-    //network.backPropagation(0)
-
-
-
-    /*cout << network;
+    Network network({150,50}, inputs, outputs, 400,0.1 );
+    cout << network;
     network.main();
-    std::cout<< '\n';
-    while(1){
-        float first = 0;
-        float second = 0;
-        float third = 0;
-        float four = 0;
 
-        cout << "veuillez entrer un vecteur ";
-        cin >> first;
-        cin >> second;
-        cin >> third;
-        cin >> four;
-        for(auto neuronResult :network.testFeedforward({first,second,third,four}) ){
-            cout<< '\n';
-            for( auto data : neuronResult)
-                cout<< " "<< data  ;
+
+
+
+
+
+    //getting the test images ready for test
+    vector<vector<float>> testImages;
+    for(const auto & datasetImage : dataset.test_images){
+        vector<float> image;
+        for(const auto  & pixel: datasetImage){
+            image.emplace_back(static_cast<float>(pixel)/255);//255
         }
-
-
-
+        testImages.emplace_back(image);
     }
-    cout<< "1110";
 
-    cout<< "\n\n1000";
-    for(auto neuronResult :network.testFeedforward({1,0,0,0}) ){
-        cout<< '\n';
-        for( auto data : neuronResult)
-            cout<< " "<< data  ;
+    //getting the test labels ready for test
+    vector<float> expectedOutput;
+    for(const auto & datasetOutput : dataset.test_labels ){
+        expectedOutput.emplace_back(static_cast<unsigned>(datasetOutput));
     }
-    cout<< "0110";
-    for(auto neuronResult :network.testFeedforward({0,1,1,0}) ){
-        cout<< '\n';
-        for( auto data : neuronResult)
-            cout<< " "<< data  ;
+
+    // testing, reading the outputs of the network and comparing to what was expected
+    //ffActivation means feedforward Activation
+    vector<vector<float>> testResult = network.testFeedforward(testImages);
+    unsigned testResultSize = testResult.size();
+    unsigned success = 0;
+    for(unsigned i = 0; i< testResultSize;++i){
+        const vector<float> ffResult = testResult[i];
+        float max = -1;
+        unsigned indexOfMax = 20;
+
+        for(unsigned j =0; j< ffResult.size(); ++j){
+            if(ffResult[j]>max){
+                max =ffResult[j];
+                indexOfMax = j;
+            }
+        }
+        //std::cout << "\n guess : "<< indexOfMax << " expected :" << expectedOutput[i];
+        if( indexOfMax == expectedOutput[i]){
+            ++success;
+        }
     }
+
+    std::cout << "ratio right answer : " << float(success)/float(expectedOutput.size()) ;
+
+
+
 
 
 
     return 0;
-     */
 
 }
+
